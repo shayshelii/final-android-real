@@ -1,0 +1,51 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.shaysheli.androaid_final.fragments.LoginFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textSize="50dp"
+        android:text="FilmIt"
+        android:layout_margin="50dp"/>
+
+    <EditText
+        android:id="@+id/editText_username"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:hint="User Name"
+        android:layout_margin="5dp"/>
+
+    <EditText
+        android:id="@+id/editText_pw"
+        android:inputType="textPassword"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center"
+        android:hint="Password"
+        android:layout_margin="5dp"/>
+
+    <Button
+        android:id="@+id/loginbtn_signin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign In"
+        android:layout_margin="10dp"
+        android:layout_gravity="right"/>
+
+    <Button
+        android:id="@+id/loginbtn_signup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"/>
+
+
+</LinearLayout>
