@@ -20,11 +20,9 @@ import com.example.shaysheli.androaid_final.fragments.Model.Movie;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class movieListFragment extends Fragment {
+public class MovieListFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
 
@@ -32,13 +30,11 @@ public class movieListFragment extends Fragment {
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public movieListFragment() {
+    public MovieListFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static movieListFragment newInstance(int columnCount) {
-        movieListFragment fragment = new movieListFragment();
+    public static MovieListFragment newInstance(int columnCount) {
+        MovieListFragment fragment = new MovieListFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
@@ -68,11 +64,10 @@ public class movieListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MymovieRecyclerViewAdapter(Model.instance.getAllStudents(), mListener));
+            recyclerView.setAdapter(new MymovieRecyclerViewAdapter(Model.instance.getAllMovies(), mListener));
         }
         return view;
     }
-
 
     @Override
     public void onAttach(Context context) {

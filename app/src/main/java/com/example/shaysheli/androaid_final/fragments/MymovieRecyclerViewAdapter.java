@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.example.shaysheli.androaid_final.R;
 import com.example.shaysheli.androaid_final.fragments.Model.Movie;
-import com.example.shaysheli.androaid_final.fragments.movieListFragment.OnListFragmentInteractionListener;
+import com.example.shaysheli.androaid_final.fragments.MovieListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;
 
@@ -68,8 +68,8 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mIdView = (TextView) view.findViewById(R.id.strow_id);
+            mContentView = (TextView) view.findViewById(R.id.strow_name);
         }
 
         @Override

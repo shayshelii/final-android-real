@@ -10,23 +10,33 @@ import java.util.Date;
 
 public class Model {
     public final static Model instance = new Model();
-    private static int id = 5;
+    private static int id = 1;
     private Model(){
         Calendar c = Calendar.getInstance();
 
-        for(int i = 1; i <= 5; i++) {
+        for(int i = 0; i < 5; i++) {
             Movie mv = new Movie();
-            mv.name = "kuku" + i;
-            mv.id = i + "";
+            mv.name = "Harry Potter " + i;
+            mv.id = id + "";
             mv.rate = i;
             mv.dateCreated = c.getTime();
             data.add(i, mv);
+            id++;
         }
     }
 
     private ArrayList<Movie> data = new ArrayList<>();
 
-    public ArrayList<Movie> getAllStudents(){
+    public ArrayList<Movie> getAllMovies(){
         return data;
+    }
+
+    public Movie getMovieByID (String movieID){
+        for (Movie movie: data) {
+            if (movie.id.equals(movieID))
+                return movie;
+        }
+
+        return null;
     }
 }
