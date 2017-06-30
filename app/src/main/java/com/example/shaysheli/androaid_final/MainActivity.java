@@ -7,14 +7,14 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.example.shaysheli.androaid_final.fragments.LoginFragment;
-import com.example.shaysheli.androaid_final.fragments.Model.Movie;
+import com.example.shaysheli.androaid_final.Model.Movie;
 import com.example.shaysheli.androaid_final.fragments.MovieDetailFragment;
 import com.example.shaysheli.androaid_final.fragments.MovieListFragment;
 
 public class MainActivity extends Activity implements LoginFragment.OnFragmentInteractionListener, MovieListFragment.OnListFragmentInteractionListener, MovieDetailFragment.OnFragmentInteractionListener
 
 {
-
+    MovieListFragment movieListFragmentInstance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +27,8 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
     }
 
     public void onFragmentInteractionChangeFrag(Fragment frag) {
+        if (frag instanceof MovieListFragment)
+            this.movieListFragmentInstance = (MovieListFragment) frag;
         FragmentTransaction tran = getFragmentManager().beginTransaction();
         tran.replace(R.id.main_container, frag);
         tran.commit();
@@ -36,7 +38,9 @@ public class MainActivity extends Activity implements LoginFragment.OnFragmentIn
     public void onListFragmentInteraction(Movie item) {
         MovieDetailFragment mvDetail = MovieDetailFragment.newInstance(item.id);
         FragmentTransaction tran = getFragmentManager().beginTransaction();
-        tran.replace(R.id.main_container, mvDetail);
+        tran.hide(this.movieListFragmentInstance);
+        tran.addToBackStack("backToList");
+        tran.add(R.id.main_container, mvDetail);
         tran.commit();
     }
 

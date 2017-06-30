@@ -1,8 +1,7 @@
-package com.example.shaysheli.androaid_final.fragments.Model;
+package com.example.shaysheli.androaid_final.Model;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
 /**
  * Created by ShaySheli on 09/06/2017.

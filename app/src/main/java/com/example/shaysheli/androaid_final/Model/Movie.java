@@ -1,4 +1,4 @@
-package com.example.shaysheli.androaid_final.fragments.Model;
+package com.example.shaysheli.androaid_final.Model;
 
 import java.util.Date;
 

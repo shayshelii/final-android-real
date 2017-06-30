@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.shaysheli.androaid_final.R;
-import com.example.shaysheli.androaid_final.fragments.Model.Movie;
+import com.example.shaysheli.androaid_final.Model.Movie;
 import com.example.shaysheli.androaid_final.fragments.MovieListFragment.OnListFragmentInteractionListener;
 
 import java.util.List;

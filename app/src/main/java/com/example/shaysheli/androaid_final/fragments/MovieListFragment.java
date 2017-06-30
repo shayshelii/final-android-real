@@ -11,8 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.shaysheli.androaid_final.R;
-import com.example.shaysheli.androaid_final.fragments.Model.Model;
-import com.example.shaysheli.androaid_final.fragments.Model.Movie;
+import com.example.shaysheli.androaid_final.Model.Model;
+import com.example.shaysheli.androaid_final.Model.Movie;
 
 /**
  * A fragment representing a list of Items.

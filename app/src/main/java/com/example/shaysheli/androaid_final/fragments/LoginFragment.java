@@ -42,8 +42,16 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
-        Button btn = (Button) view.findViewById(R.id.loginbtn_signin);
-        btn.setOnClickListener(new View.OnClickListener() {
+        Button btnSignUp = (Button) view.findViewById(R.id.loginbtn_signup);
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RegisterFragment registerFragment = RegisterFragment.newInstance(null, null);
+                onButtonPressed(registerFragment);
+            }
+        });
+        Button btnSignIn = (Button) view.findViewById(R.id.loginbtn_signin);
+        btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MovieListFragment listFragment =  MovieListFragment.newInstance(1);
