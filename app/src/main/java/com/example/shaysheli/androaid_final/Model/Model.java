@@ -18,13 +18,19 @@ public class Model {
             mv.name = "Harry Potter " + i;
             mv.id = id + "";
             mv.rate = i;
-            mv.dateCreated = c.getTime();
+            mv.dateCreated = c.getTime().toString();
             data.add(i, mv);
             id++;
         }
     }
 
     private ArrayList<Movie> data = new ArrayList<>();
+
+    public void addMovie(Movie mv){
+        mv.id = ++id + "";
+        mv.imageUrl = "../res/drawable/grid.png";
+        data.add(Integer.parseInt(mv.id), mv);
+    }
 
     public ArrayList<Movie> getAllMovies(){
         return data;
@@ -37,5 +43,20 @@ public class Model {
         }
 
         return null;
+    }
+
+    public Boolean rmMovie(Movie mv) {
+        id--;
+        return data.remove(mv);
+    }
+
+    public Boolean editMovie(Movie mv){
+        if (this.getMovieByID(mv.id) == null) {
+            this.addMovie(mv);
+        }else {
+            data.set(Integer.parseInt(mv.id), mv);
+        }
+
+        return true;
     }
 }

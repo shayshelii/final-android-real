@@ -1,10 +1,15 @@
 package com.example.shaysheli.androaid_final.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -23,7 +28,7 @@ import com.example.shaysheli.androaid_final.Model.Movie;
  * Use the {@link MovieDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MovieDetailFragment extends Fragment {
+public class MovieDetailFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String MOVIE_ID = "MOVIE_ID";
@@ -32,6 +37,7 @@ public class MovieDetailFragment extends Fragment {
     private String MovieID;
 
     private OnFragmentInteractionListener mListener;
+    public static FragmentTransaction tran;
 
     public TextView movieTitle;
     public TextView movieDescription;
@@ -60,6 +66,8 @@ public class MovieDetailFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
+
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             MovieID = getArguments().getString(MOVIE_ID);
@@ -89,13 +97,6 @@ public class MovieDetailFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -113,6 +114,11 @@ public class MovieDetailFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onClick(View v) {
+        mListener.onFragmentInteraction(MovieID);
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -125,6 +131,31 @@ public class MovieDetailFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(String mvId);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_edit, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.edit:
+                mListener.onFragmentInteraction(MovieID);
+
+                break;
+            case android.R.id.home:
+                MovieListFragment listFragment = MovieListFragment.newInstance(1);
+                tran = getFragmentManager().beginTransaction();
+                tran.replace(R.id.main_container, listFragment);
+                tran.commit();
+                break;
+            default:
+                break;
+        }
+
+        return true;
     }
 }

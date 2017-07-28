@@ -9,6 +9,7 @@ import java.util.Date;
 public class Movie {
     public String id;
     public String name;
-    public Date dateCreated;
+    public String dateCreated;
+    public String imageUrl;
     public int rate;
 }

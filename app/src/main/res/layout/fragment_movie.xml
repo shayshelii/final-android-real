@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/strow_image"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
         android:src="@drawable/unavail" />
     <TextView
         android:id="@+id/strow_id"

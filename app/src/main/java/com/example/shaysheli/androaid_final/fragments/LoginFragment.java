@@ -46,7 +46,7 @@ public class LoginFragment extends Fragment {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RegisterFragment registerFragment = RegisterFragment.newInstance(null, null);
+                RegisterFragment registerFragment = RegisterFragment.newInstance();
                 onButtonPressed(registerFragment);
             }
         });

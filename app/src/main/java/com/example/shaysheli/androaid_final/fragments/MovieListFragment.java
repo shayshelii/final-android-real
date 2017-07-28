@@ -1,12 +1,17 @@
 package com.example.shaysheli.androaid_final.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -25,6 +30,7 @@ public class MovieListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    public static FragmentTransaction tran;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -44,6 +50,7 @@ public class MovieListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
@@ -99,5 +106,33 @@ public class MovieListFragment extends Fragment {
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
         void onListFragmentInteraction(Movie item);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add_new:
+                Log.d("dev", "will create new ");
+                AddOrEditFragment details = AddOrEditFragment.newInstance(null, "Add");
+                tran = getFragmentManager().beginTransaction();
+                tran.replace(R.id.main_container, details).commit();
+
+                break;
+            case android.R.id.home:
+                MovieListFragment listFragment = MovieListFragment.newInstance(1);
+                tran = getFragmentManager().beginTransaction();
+                tran.replace(R.id.main_container, listFragment);
+                tran.commit();
+                break;
+            default:
+                break;
+        }
+
+        return true;
     }
 }
