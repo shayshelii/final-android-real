@@ -80,17 +80,29 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
 
         LinearLayout l = (LinearLayout) view.findViewById(R.id.detail_frag);
         l.setBackground(getActivity().getResources().getDrawable(R.drawable.unavail));
-
-        Movie currentMovie = Model.instance.getMovieByID(MovieID);
-
+        movieRating = (RatingBar) view.findViewById(R.id.details_movie_rating);
         movieTitle = (TextView) view.findViewById(R.id.details_movie_name);
-        movieTitle.setText(currentMovie.name);
-
         movieDescription = (TextView) view.findViewById(R.id.details_movie_description);
 
+
+        Model.instance.getMovieByID(MovieID, new Model.IGetMovieCallback() {
+            @Override
+            public void onComplete(Movie mv) {
+                Movie currentMovie = mv;
+                movieTitle.setText(currentMovie.name);
+
+                // TODO: set the description
+                //        movieDescription.setText(currentMovie);
         movieDescription.setText(currentMovie.description);
 
-        movieRating = (RatingBar) view.findViewById(R.id.details_movie_rating);
+                // TODO: add the rating and the rate button
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
         movieRating.setRating(Float.parseFloat(currentMovie.rate));
 
         return view;

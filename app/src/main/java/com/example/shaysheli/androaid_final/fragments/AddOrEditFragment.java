@@ -101,31 +101,47 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
         }else {
             btnAddEdit.setText("Edit");
             btnAddEditDel.setVisibility(View.VISIBLE);
-            mvEdit = Model.instance.getMovieByID(MOVIEID);
-            edtId.setText(mvEdit.id);
-            edtName.setText(mvEdit.name);
-            edtRate.setRating(Float.parseFloat(mvEdit.rate));
+            Model.instance.getMovieByID(MOVIEID, new Model.IGetMovieCallback() {
+                @Override
+                public void onComplete(Movie mv) {
+                    mvEdit = mv;
+                    edtId.setText(mvEdit.id);
+                    edtName.setText(mvEdit.name);
+                    edtRate.setRating(Float.parseFloat(mvEdit.rate));
+                    datePicker.setText(mvEdit.dateCreated);
+                }
 
-            datePicker.setText(mvEdit.dateCreated);
+        }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
         }
 
         btnAddEditDel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (Model.instance.rmMovie(mvEdit)) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
-                    alertDialog.setTitle("STUDENT DELETED");
-                    alertDialog.setMessage("SUCCESS");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
-                }
+            public void onClick(final View v) {
+                Model.instance.rmMovie(mvEdit, new Model.IRemoveMovie() {
+                    @Override
+                    public void onComplete(boolean success) {
+                        if (success) {
+                            AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
+                            alertDialog.setTitle("STUDENT DELETED");
+                            alertDialog.setMessage("SUCCESS");
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alertDialog.show();
+                        }
 
-                mListener.onFragmentInteractionAddOrEdit();
+                        mListener.onFragmentInteractionAddOrEdit();
+                    }
+                });
             }
         });
 
@@ -158,15 +174,29 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onClick(View v) {
+    public void onClick(final View v) {
         mvEdit.name = edtName.getText().toString();
-        String idToCheck = edtId.getText().toString();
+        final String idToCheck = edtId.getText().toString();
         mvEdit.rate = edtRate.getRating() + "";
         mvEdit.imageUrl = "../res/drawable/grid.png";
         mvEdit.dateCreated = datePicker.getText().toString();
 
-        if (((Model.instance.getMovieByID(idToCheck) != null) && (btnAddEdit.getText().equals("Add"))) ||
-                ((!idToCheck.equals(mvEdit.id)) && Model.instance.getMovieByID(idToCheck) != null) && (btnAddEdit.getText().equals("Edit")))
+        Model.instance.getMovieByID(idToCheck, new Model.IGetMovieCallback() {
+            @Override
+            public void onComplete(Movie mv) {
+                alertUserAboutAddOrUpdate(v, mv, idToCheck);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+    }
+
+    private void alertUserAboutAddOrUpdate(final View v, Movie mv, String idToCheck) {
+        if (((mv != null) && (btnAddEdit.getText().equals("Add"))) ||
+                ((!idToCheck.equals(mvEdit.id)) && mv != null) && (btnAddEdit.getText().equals("Edit")))
         {
             AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
             alertDialog.setTitle("ID IN USE");
@@ -181,20 +211,25 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
         }
         else {
             mvEdit.id = idToCheck;
+            Model.instance.editMovie(mvEdit, new Model.IGetMovieEditSuccessCallback() {
+                @Override
+                public void onComplete(boolean success) {
+                    if (success) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
+                        alertDialog.setTitle("STUDENT SAVED");
+                        alertDialog.setMessage("SUCCESS");
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+                    }
 
-            if (Model.instance.editMovie(mvEdit)) {
-                AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
-                alertDialog.setTitle("STUDENT SAVED");
-                alertDialog.setMessage("SUCCESS");
-                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        });
-                alertDialog.show();
-            }
-            mListener.onFragmentInteractionAddOrEdit();
+                    mListener.onFragmentInteractionAddOrEdit();
+                }
+            });
         }
     }
 

@@ -18,6 +18,8 @@ import com.example.shaysheli.androaid_final.R;
 import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.Model.Movie;
 
+import java.util.ArrayList;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -64,13 +66,24 @@ public class MovieListFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            final RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ListAdapter(Model.instance.getAllMovies(), mListener));
+
+            Model.instance.getAllMovies(new Model.IGetAllMoviesCallback() {
+                @Override
+                public void onComplete(ArrayList<Movie> movies) {
+                    recyclerView.setAdapter(new ListAdapter(movies, mListener));
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
         }
         return view;
     }

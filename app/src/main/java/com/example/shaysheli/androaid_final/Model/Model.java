@@ -10,8 +10,12 @@ import java.util.Calendar;
 public class Model {
     public final static Model instance = new Model();
     private static int id = 1;
+    private ModelFirebase modelFirebase;
+
     private Model(){
         Calendar c = Calendar.getInstance();
+
+        modelFirebase = new ModelFirebase();
 
         for(int i = 0; i < 5; i++) {
             Movie mv = new Movie();
@@ -26,37 +30,94 @@ public class Model {
 
     private ArrayList<Movie> data = new ArrayList<>();
 
+    // works with firebase
     public void addMovie(Movie mv){
         mv.id = ++id + "";
         mv.imageUrl = "../res/drawable/grid.png";
-        data.add(Integer.parseInt(mv.id), mv);
+
+        modelFirebase.addMovie(mv);
     }
 
-    public ArrayList<Movie> getAllMovies(){
-        return data;
+    // works with firebase
+    public interface IGetAllMoviesCallback {
+        void onComplete(ArrayList<Movie> movies);
+        void onCancel();
+    }
+    public void getAllMovies(final IGetAllMoviesCallback callback){
+        modelFirebase.getAllMovies(new ModelFirebase.IGetAllMoviesCallback() {
+            @Override
+            public void onComplete(ArrayList<Movie> movies) {
+                callback.onComplete(movies);
+            }
+
+            @Override
+            public void onCancel() {
+                callback.onCancel();
+            }
+        });
     }
 
-    public Movie getMovieByID (String movieID){
-        for (Movie movie: data) {
-            if (movie.id.equals(movieID))
-                return movie;
-        }
+    // works with firebase
+    public interface IGetMovieCallback {
+        void onComplete(Movie mv);
+        void onCancel();
+    }// works with firebase
+    public void getMovieByID (String movieID, final IGetMovieCallback callback){
+        modelFirebase.getMovieByID(movieID, new ModelFirebase.IGetMovieCallback() {
+            @Override
+            public void onComplete(Movie mv) {
+                callback.onComplete(mv);
+            }
 
-        return null;
+            @Override
+            public void onCancel() {
+                callback.onCancel();
+            }
+        });
     }
 
-    public Boolean rmMovie(Movie mv) {
-        id--;
-        return data.remove(mv);
+     // working with firebase
+    public interface IRemoveMovie {
+         void onComplete(boolean success);
+     }
+    public void rmMovie(Movie mv, final IRemoveMovie callback) {
+        modelFirebase.rmMovie(mv, new ModelFirebase.IRemoveMovieCallback() {
+            @Override
+            public void onComplete(boolean success) {
+                id--;
+                callback.onComplete(success);
+            }
+        });
     }
 
-    public Boolean editMovie(Movie mv){
-        if (this.getMovieByID(mv.id) == null) {
-            this.addMovie(mv);
-        }else {
-            data.set(Integer.parseInt(mv.id), mv);
-        }
 
-        return true;
+    // works with firebase
+    public interface IGetMovieEditSuccessCallback {
+        void onComplete(boolean success);
+    }
+    public void editMovie(final Movie mv, final IGetMovieEditSuccessCallback callback){
+
+        this.getMovieByID(mv.id, new IGetMovieCallback() {
+            @Override
+            public void onComplete(Movie resultMv) {
+                if (resultMv == null) {
+                    addMovie(mv);
+                    callback.onComplete(true);
+                }
+                else {
+                    modelFirebase.editMovie(mv, new ModelFirebase.IEditMoveCallback() {
+                        @Override
+                        public void onComplete(boolean success) {
+                            callback.onComplete(success);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancel() {
+                callback.onComplete(false);
+            }
+        });
     }
 }
