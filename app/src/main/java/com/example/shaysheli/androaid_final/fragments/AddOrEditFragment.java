@@ -124,21 +124,26 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
 
         btnAddEditDel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (Model.instance.rmMovie(mvEdit)) {
-                    AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
-                    alertDialog.setTitle("STUDENT DELETED");
-                    alertDialog.setMessage("SUCCESS");
-                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog.show();
-                }
+            public void onClick(final View v) {
+                Model.instance.rmMovie(mvEdit, new Model.IRemoveMovie() {
+                    @Override
+                    public void onComplete(boolean success) {
+                        if (success) {
+                            AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
+                            alertDialog.setTitle("STUDENT DELETED");
+                            alertDialog.setMessage("SUCCESS");
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alertDialog.show();
+                        }
 
-                mListener.onFragmentInteractionAddOrEdit();
+                        mListener.onFragmentInteractionAddOrEdit();
+                    }
+                });
             }
         });
 
