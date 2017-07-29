@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/detail_frag"
+    android:background="@color/colorPrimary"
     tools:context="com.example.shaysheli.androaid_final.fragments.MovieDetailFragment">
     <ImageView
         android:layout_width="match_parent"
