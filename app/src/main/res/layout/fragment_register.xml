@@ -154,7 +154,7 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/signUpBtn"
+            android:id="@+id/regsignUpBtn"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -164,17 +164,5 @@
             android:textColor="@color/background_color"
             android:textSize="17sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/already_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="5dp"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="@string/already_user"
-            android:textColor="@color/white_greyish"
-            android:textSize="15sp" />
 
     </LinearLayout>
