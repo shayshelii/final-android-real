@@ -6,31 +6,23 @@
     android:id="@+id/detail_frag"
     android:background="@color/colorPrimary"
     tools:context="com.example.shaysheli.androaid_final.fragments.MovieDetailFragment">
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/unavail"
-        android:scaleType="centerCrop"
-        android:visibility="gone"
-        android:adjustViewBounds="true"
-
-        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <TextView
             android:id="@+id/details_movie_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title"
-            android:textSize="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"
-            android:layout_gravity="center_horizontal"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textSize="30dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
+        android:layout_gravity="center_horizontal"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textAlignment="center"
             android:id="@+id/details_movie_description"
             android:layout_weight="0.1"/>
         <TextView
@@ -42,6 +34,7 @@
             android:id="@+id/details_movie_rating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+
             style="?android:attr/ratingBarStyle"
             android:layout_marginBottom="40dp"
             android:numStars="5"

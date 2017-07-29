@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -71,7 +70,7 @@ public class MovieListFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MymovieRecyclerViewAdapter(Model.instance.getAllMovies(), mListener));
+            recyclerView.setAdapter(new ListAdapter(Model.instance.getAllMovies(), mListener));
         }
         return view;
     }

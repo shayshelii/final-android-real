@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.shaysheli.androaid_final.R;
@@ -17,12 +18,12 @@ import java.util.List;
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecyclerViewAdapter.ViewHolder> {
+public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     private final List<Movie> mValues;
     private final OnListFragmentInteractionListener mListener;
 
-    public MymovieRecyclerViewAdapter(List<Movie> items, OnListFragmentInteractionListener listener) {
+    public ListAdapter(List<Movie> items, OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -41,6 +42,7 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
         holder.mItem = wantedMovie;
         holder.mIdView.setText(wantedMovie.id);
         holder.mContentView.setText(wantedMovie.name);
+        holder.mRaiting.setRating(Float.parseFloat(wantedMovie.rate));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +65,7 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
+        public final RatingBar mRaiting;
         public Movie mItem;
 
         public ViewHolder(View view) {
@@ -70,6 +73,7 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
             mView = view;
             mIdView = (TextView) view.findViewById(R.id.strow_id);
             mContentView = (TextView) view.findViewById(R.id.strow_name);
+            mRaiting = (RatingBar) view.findViewById(R.id.strow_rating);
         }
 
         @Override

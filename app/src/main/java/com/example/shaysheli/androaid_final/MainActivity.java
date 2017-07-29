@@ -2,10 +2,8 @@ package com.example.shaysheli.androaid_final;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 
 import com.example.shaysheli.androaid_final.fragments.AddOrEditFragment;
 import com.example.shaysheli.androaid_final.fragments.LoginFragment;
@@ -41,24 +39,29 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
     }
 
     public void onFragmentInteractionChangeFrag(Fragment frag) {
+        tran = getFragmentManager().beginTransaction();
+
         if (frag instanceof MovieListFragment)
             this.movieListFragmentInstance = (MovieListFragment) frag;
+        else {
+            tran.addToBackStack("backToLogin");
+        }
+
         tran = getFragmentManager().beginTransaction();
-        tran.addToBackStack("backLogin");
         tran.replace(R.id.main_container, frag);
         tran.commit();
     }
 
     @Override
     public void onListFragmentInteraction(Movie item) {
-        if (movieDetailFragmentInstance == null) {
-            this.movieDetailFragmentInstance = MovieDetailFragment.newInstance(item.id);
+        this.movieDetailFragmentInstance = MovieDetailFragment.newInstance(item.id);
 
-            tran = getFragmentManager().beginTransaction();
-            tran.hide(this.movieListFragmentInstance);
-            tran.add(R.id.main_container, this.movieDetailFragmentInstance);
-            tran.commit();
-        }
+        tran = getFragmentManager().beginTransaction();
+        tran.hide(this.movieListFragmentInstance);
+
+        tran.addToBackStack("backList");
+        tran.add(R.id.main_container, this.movieDetailFragmentInstance);
+        tran.commit();
     }
 
     @Override
@@ -75,6 +78,7 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
     public void onFragmentInteractionAddOrEdit() {
         MovieListFragment listFragment = MovieListFragment.newInstance(1);
         tran = getFragmentManager().beginTransaction();
+        tran.addToBackStack("backToListOrDetail");
         tran.replace(R.id.main_container, listFragment);
         tran.commit();
     }

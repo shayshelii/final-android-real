@@ -3,9 +3,7 @@ package com.example.shaysheli.androaid_final.fragments;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.example.shaysheli.androaid_final.R;
 import com.example.shaysheli.androaid_final.Model.Model;
@@ -67,7 +66,6 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setHasOptionsMenu(true);
-
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             MovieID = getArguments().getString(MOVIE_ID);
@@ -80,7 +78,8 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
 
-//        view.findViewById(R.id.detail_frag).setBackground(getActivity().getResources().getDrawable(R.drawable.unavail));
+        LinearLayout l = (LinearLayout) view.findViewById(R.id.detail_frag);
+        l.setBackground(getActivity().getResources().getDrawable(R.drawable.unavail));
 
         Movie currentMovie = Model.instance.getMovieByID(MovieID);
 
@@ -89,10 +88,10 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
 
         movieDescription = (TextView) view.findViewById(R.id.details_movie_description);
 
-        // TODO: set the description
-//        movieDescription.setText(currentMovie);
+        movieDescription.setText(currentMovie.description);
 
-        // TODO: add the rating and the rate button
+        movieRating = (RatingBar) view.findViewById(R.id.details_movie_rating);
+        movieRating.setRating(Float.parseFloat(currentMovie.rate));
 
         return view;
     }

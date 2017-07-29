@@ -53,31 +53,7 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25dp"
-            android:textColor="@color/white_greyish"
-            android:padding="7dp"
-            android:text="Rate:"/>
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/AddEditRate"/>
-    </LinearLayout>
-
-    <CheckBox
-        android:id="@+id/AddEditCB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="25dp"
-        android:textColor="@color/white_greyish"
-        android:padding="7dp"
-        android:text="checked" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -95,6 +71,31 @@
             android:layout_height="wrap_content"
             android:id="@+id/datePicker"
             />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25dp"
+            android:textColor="@color/white_greyish"
+            android:padding="7dp"
+            android:text="Rate:"/>
+
+        <RatingBar
+            android:id="@+id/AddEditRating"
+            style="?android:attr/ratingBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:layout_marginBottom="40dp"
+            android:foregroundGravity="center_horizontal"
+            android:isIndicator="true"
+            android:numStars="5"
+            android:stepSize="0.5" />
     </LinearLayout>
 
     <LinearLayout

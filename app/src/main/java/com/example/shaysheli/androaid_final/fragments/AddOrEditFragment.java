@@ -2,6 +2,7 @@ package com.example.shaysheli.androaid_final.fragments;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 
 import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.Model.Movie;
@@ -41,9 +43,8 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
     private static Movie mvEdit;
     private static EditText edtName = null;
     private static EditText edtId = null;
-    private static EditText edtRate = null;
+    private static RatingBar edtRate = null;
     private static ImageView edtImage = null;
-    private static CheckBox edtCb = null;
     private static MyDatePicker datePicker = null;
 
     private OnFragmentInteractionListener mListener;
@@ -89,9 +90,9 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
         Button btnAddEditDel = (Button) v.findViewById(R.id.AddEditButtonDel);
         edtName = (EditText) v.findViewById(R.id.AddEditName);
         edtId = (EditText) v.findViewById(R.id.AddEditId);
-        edtRate = (EditText) v.findViewById(R.id.AddEditRate);
+        edtRate = (RatingBar) v.findViewById(R.id.AddEditRating);
+        edtRate.setIsIndicator(false);
         edtImage = (ImageView) v.findViewById(R.id.AddEditImage);
-        edtCb = (CheckBox) v.findViewById(R.id.AddEditCB);
         datePicker = (MyDatePicker) v.findViewById(R.id.datePicker);
 
         if (TYPE.equals("Add")) {
@@ -103,7 +104,8 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
             mvEdit = Model.instance.getMovieByID(MOVIEID);
             edtId.setText(mvEdit.id);
             edtName.setText(mvEdit.name);
-            edtRate.setText(mvEdit.rate + "");
+            edtRate.setRating(Float.parseFloat(mvEdit.rate));
+
             datePicker.setText(mvEdit.dateCreated);
         }
 
@@ -149,7 +151,6 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
                     + " must implement OnFragmentInteractionListener");
         }
     }
-
     @Override
     public void onDetach() {
         super.onDetach();
@@ -160,7 +161,7 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         mvEdit.name = edtName.getText().toString();
         String idToCheck = edtId.getText().toString();
-        mvEdit.rate = edtRate.getText().toString();
+        mvEdit.rate = edtRate.getRating() + "";
         mvEdit.imageUrl = "../res/drawable/grid.png";
         mvEdit.dateCreated = datePicker.getText().toString();
 
