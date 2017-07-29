@@ -105,8 +105,6 @@ public class Model {
                     callback.onComplete(true);
                 }
                 else {
-
-                    // TODO: 7/29/17 change to firebase!!
                     modelFirebase.editMovie(mv, new ModelFirebase.IEditMoveCallback() {
                         @Override
                         public void onComplete(boolean success) {

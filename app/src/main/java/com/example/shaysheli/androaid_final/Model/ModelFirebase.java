@@ -29,10 +29,10 @@ public class ModelFirebase {
         void onCancel();
     }
     public void getAllMovies(final IGetAllMoviesCallback callback){
-        movieReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        movieReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ArrayList<Movie> movies = new ArrayList<Movie>();
+                ArrayList<Movie> movies = new ArrayList<>();
 
                 for (DataSnapshot snap: dataSnapshot.getChildren()) {
                     Movie mv = snap.getValue(Movie.class);
@@ -87,7 +87,7 @@ public class ModelFirebase {
         });
     }
 
-    // TODO: 7/29/17 change to firebase
+    // works with firebase
     interface IEditMoveCallback {
         void onComplete(boolean success);
     }
