@@ -17,7 +17,7 @@ public class Model {
             Movie mv = new Movie();
             mv.name = "Harry Potter " + i;
             mv.id = id + "";
-            mv.rate = i;
+            mv.rate = i + "";
             mv.dateCreated = c.getTime().toString();
             data.add(i, mv);
             id++;

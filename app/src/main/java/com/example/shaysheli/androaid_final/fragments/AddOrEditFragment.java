@@ -160,7 +160,7 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         mvEdit.name = edtName.getText().toString();
         String idToCheck = edtId.getText().toString();
-        mvEdit.rate = Integer.parseInt(edtRate.getText().toString());
+        mvEdit.rate = edtRate.getText().toString();
         mvEdit.imageUrl = "../res/drawable/grid.png";
         mvEdit.dateCreated = datePicker.getText().toString();
 

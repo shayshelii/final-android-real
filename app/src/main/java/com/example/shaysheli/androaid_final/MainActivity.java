@@ -5,6 +5,7 @@ import android.app.FragmentTransaction;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 
 import com.example.shaysheli.androaid_final.fragments.AddOrEditFragment;
 import com.example.shaysheli.androaid_final.fragments.LoginFragment;
@@ -19,6 +20,7 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
                                                                AddOrEditFragment.OnFragmentInteractionListener,
                                                                RegisterFragment.OnFragmentInteractionListener
 {
+    LoginFragment loginFragmentInstance;
     MovieListFragment movieListFragmentInstance;
     MovieDetailFragment movieDetailFragmentInstance;
 
@@ -29,11 +31,13 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        LoginFragment listFragment =  LoginFragment.newInstance();
-        tran = getFragmentManager().beginTransaction();
-        tran.add(R.id.main_container, listFragment);
-        tran.commit();
+        if (savedInstanceState == null)
+        {
+            this.loginFragmentInstance =  LoginFragment.newInstance();
+            tran = getFragmentManager().beginTransaction();
+            tran.add(R.id.main_container, this.loginFragmentInstance);
+            tran.commit();
+        }
     }
 
     public void onFragmentInteractionChangeFrag(Fragment frag) {
@@ -47,14 +51,14 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
 
     @Override
     public void onListFragmentInteraction(Movie item) {
-        MovieDetailFragment mvDetail = MovieDetailFragment.newInstance(item.id);
-        this.movieDetailFragmentInstance = mvDetail;
+        if (movieDetailFragmentInstance == null) {
+            this.movieDetailFragmentInstance = MovieDetailFragment.newInstance(item.id);
 
-        tran = getFragmentManager().beginTransaction();
-        tran.hide(this.movieListFragmentInstance);
-        tran.addToBackStack("backToList");
-        tran.add(R.id.main_container, mvDetail);
-        tran.commit();
+            tran = getFragmentManager().beginTransaction();
+            tran.hide(this.movieListFragmentInstance);
+            tran.add(R.id.main_container, this.movieDetailFragmentInstance);
+            tran.commit();
+        }
     }
 
     @Override

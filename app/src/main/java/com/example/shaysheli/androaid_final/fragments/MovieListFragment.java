@@ -117,7 +117,6 @@ public class MovieListFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.add_new:
-                Log.d("dev", "will create new ");
                 AddOrEditFragment details = AddOrEditFragment.newInstance(null, "Add");
                 tran = getFragmentManager().beginTransaction();
                 tran.replace(R.id.main_container, details).commit();

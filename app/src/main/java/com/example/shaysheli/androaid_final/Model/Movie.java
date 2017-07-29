@@ -11,5 +11,6 @@ public class Movie {
     public String name;
     public String dateCreated;
     public String imageUrl;
-    public int rate;
+    public String description;
+    public String rate;
 }
