@@ -76,10 +76,18 @@ public class Model {
         });
     }
 
-    // // TODO: 7/29/17 change to firebase
-    public Boolean rmMovie(Movie mv) {
-        id--;
-        return data.remove(mv);
+     // working with firebase
+    public interface IRemoveMovie {
+         void onComplete(boolean success);
+     }
+    public void rmMovie(Movie mv, final IRemoveMovie callback) {
+        modelFirebase.rmMovie(mv, new ModelFirebase.IRemoveMovieCallback() {
+            @Override
+            public void onComplete(boolean success) {
+                id--;
+                callback.onComplete(success);
+            }
+        });
     }
 
 
@@ -94,14 +102,18 @@ public class Model {
             public void onComplete(Movie resultMv) {
                 if (resultMv == null) {
                     addMovie(mv);
+                    callback.onComplete(true);
                 }
                 else {
 
                     // TODO: 7/29/17 change to firebase!!
-                    data.set(Integer.parseInt(mv.id), mv);
+                    modelFirebase.editMovie(mv, new ModelFirebase.IEditMoveCallback() {
+                        @Override
+                        public void onComplete(boolean success) {
+                            callback.onComplete(success);
+                        }
+                    });
                 }
-
-                callback.onComplete(true);
             }
 
             @Override

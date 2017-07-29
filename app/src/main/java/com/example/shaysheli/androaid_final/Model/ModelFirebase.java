@@ -13,10 +13,14 @@ import java.util.ArrayList;
  */
 
 public class ModelFirebase {
-    public FirebaseDatabase database;
+    private static final String MOVIES_KEY = "Movies";
+    private FirebaseDatabase database;
+    private DatabaseReference movieReference;
 
     public ModelFirebase() {
         database = FirebaseDatabase.getInstance();
+        movieReference = database.getReference(MOVIES_KEY);
+
     }
 
     // works with firebase
@@ -25,8 +29,7 @@ public class ModelFirebase {
         void onCancel();
     }
     public void getAllMovies(final IGetAllMoviesCallback callback){
-        DatabaseReference reference = database.getReference("Movies");
-        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+        movieReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<Movie> movies = new ArrayList<Movie>();
@@ -48,18 +51,15 @@ public class ModelFirebase {
 
     // works with firebase
     public void addMovie(Movie mv){
-        DatabaseReference reference = database.getReference("Movies");
-        reference.child(mv.id).setValue(mv);
+        movieReference.child(mv.id).setValue(mv);
     }
 
     interface IGetMovieCallback {
         void onComplete(Movie mv);
         void onCancel();
     }
-
     public void getMovieByID (String movieID, final IGetMovieCallback callback){
-        DatabaseReference reference = database.getReference("Movies");
-        reference.child(movieID).addListenerForSingleValueEvent(new ValueEventListener() {
+        movieReference.child(movieID).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Movie mv = dataSnapshot.getValue(Movie.class);
@@ -73,13 +73,30 @@ public class ModelFirebase {
         });
     }
 
-    // TODO: 7/29/17 change to firebase
-    public Boolean rmMovie(Movie mv) {
-        return false;
+    // works with firebase
+
+    interface IRemoveMovieCallback {
+        void onComplete(boolean success);
+    }
+    public void rmMovie(Movie mv, final IRemoveMovieCallback callback) {
+        movieReference.child(mv.id).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                callback.onComplete(databaseError == null);
+            }
+        });
     }
 
     // TODO: 7/29/17 change to firebase
-    public Boolean editMovie(Movie mv){
-        return true;
+    interface IEditMoveCallback {
+        void onComplete(boolean success);
+    }
+    public void editMovie(Movie mv, final IEditMoveCallback callback){
+        movieReference.child(mv.id).setValue(mv, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                callback.onComplete(databaseError == null);
+            }
+        });
     }
 }
