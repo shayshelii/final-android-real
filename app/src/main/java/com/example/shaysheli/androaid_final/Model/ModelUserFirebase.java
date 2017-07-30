@@ -1,9 +1,9 @@
 package com.example.shaysheli.androaid_final.Model;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,6 +102,24 @@ public class ModelUserFirebase {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 callback.onCancel();
+            }
+        });
+    }
+
+    interface IGetUserLoginCallback {
+        void onComplete(User user);
+    }
+    public void userLogin(User user, String password , final IGetUserLoginCallback callback) {
+        firebaseAuth.signInWithEmailAndPassword(user.getEmail(), password)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                getCurrentUser(new IGetCurrentUserCallback() {
+                    @Override
+                    public void onComplete(User user) {
+                        callback.onComplete(user);
+                    }
+                });
             }
         });
     }

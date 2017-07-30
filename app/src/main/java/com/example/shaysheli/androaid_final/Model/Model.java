@@ -120,8 +120,8 @@ public class Model {
     public interface IAddUser {
         void onComplete(User user);
     }
-    public void addUser(User user, String passwod, final IAddUser callback ) {
-        modelUserFirebase.addUser(user, passwod, new ModelUserFirebase.IAddUser() {
+    public void addUser(User user, String password, final IAddUser callback ) {
+        modelUserFirebase.addUser(user, password, new ModelUserFirebase.IAddUser() {
             @Override
             public void onComplete(User user) {
                 callback.onComplete(user);
@@ -143,6 +143,18 @@ public class Model {
             @Override
             public void onCancel() {
                 callback.onCancel();
+            }
+        });
+    }
+
+    public interface IGetUserLoginCallback {
+        void onComplete(User user);
+    }
+    public void userLogin(User user, String password , final IGetUserLoginCallback callback) {
+        modelUserFirebase.userLogin(user, password, new ModelUserFirebase.IGetUserLoginCallback() {
+            @Override
+            public void onComplete(User user) {
+                callback.onComplete(user);
             }
         });
     }
