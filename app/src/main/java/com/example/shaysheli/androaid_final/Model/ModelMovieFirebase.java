@@ -12,13 +12,13 @@ import java.util.ArrayList;
  * Created by tomer on 7/29/17.
  */
 
-public class ModelFirebase {
+public class ModelMovieFirebase {
     private static final String MOVIES_KEY = "Movies";
     private FirebaseDatabase database;
     private DatabaseReference movieReference;
 
 
-    public ModelFirebase() {
+    public ModelMovieFirebase() {
         database = FirebaseDatabase.getInstance();
         movieReference = database.getReference(MOVIES_KEY);
     }

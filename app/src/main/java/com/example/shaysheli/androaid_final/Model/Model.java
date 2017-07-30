@@ -1,7 +1,10 @@
 package com.example.shaysheli.androaid_final.Model;
 
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by ShaySheli on 09/06/2017.
@@ -9,15 +12,17 @@ import java.util.Calendar;
 
 public class Model {
     public final static Model instance = new Model();
-    private ModelFirebase modelFirebase;
+    private ModelMovieFirebase modelMovieFirebase;
+    private ModelUserFirebase modelUserFirebase;
 
     private Model(){
-        modelFirebase = new ModelFirebase();
+        modelMovieFirebase = new ModelMovieFirebase();
+        modelUserFirebase = new ModelUserFirebase();
     }
 
     // works with firebase
     public void addMovie(Movie mv){
-        modelFirebase.addMovie(mv);
+        modelMovieFirebase.addMovie(mv);
     }
 
     // works with firebase
@@ -26,7 +31,7 @@ public class Model {
         void onCancel();
     }
     public void getAllMovies(final IGetAllMoviesCallback callback){
-        modelFirebase.getAllMovies(new ModelFirebase.IGetAllMoviesCallback() {
+        modelMovieFirebase.getAllMovies(new ModelMovieFirebase.IGetAllMoviesCallback() {
             @Override
             public void onComplete(ArrayList<Movie> movies) {
                 callback.onComplete(movies);
@@ -45,7 +50,7 @@ public class Model {
         void onCancel();
     }// works with firebase
     public void getMovieByID (String movieID, final IGetMovieCallback callback){
-        modelFirebase.getMovieByID(movieID, new ModelFirebase.IGetMovieCallback() {
+        modelMovieFirebase.getMovieByID(movieID, new ModelMovieFirebase.IGetMovieCallback() {
             @Override
             public void onComplete(Movie mv) {
                 callback.onComplete(mv);
@@ -63,7 +68,7 @@ public class Model {
          void onComplete(boolean success);
      }
     public void rmMovie(Movie mv, final IRemoveMovie callback) {
-        modelFirebase.rmMovie(mv, new ModelFirebase.IRemoveMovieCallback() {
+        modelMovieFirebase.rmMovie(mv, new ModelMovieFirebase.IRemoveMovieCallback() {
             @Override
             public void onComplete(boolean success) {
                 callback.onComplete(success);
@@ -86,7 +91,7 @@ public class Model {
                     callback.onComplete(true);
                 }
                 else {
-                    modelFirebase.editMovie(mv, new ModelFirebase.IEditMoveCallback() {
+                    modelMovieFirebase.editMovie(mv, new ModelMovieFirebase.IEditMoveCallback() {
                         @Override
                         public void onComplete(boolean success) {
                             callback.onComplete(success);
@@ -98,6 +103,26 @@ public class Model {
             @Override
             public void onCancel() {
                 callback.onComplete(false);
+            }
+        });
+    }
+
+    // TODO: 7/30/17 users options!
+
+    public User getCurrentUser() {
+        User user = modelUserFirebase.getCurrentUser();
+
+        return user;
+    }
+
+    public interface IGetUser {
+        void onComplete(User user);
+    }
+    public void addUser(User user, String passwod, final IGetUser callback ) {
+        modelUserFirebase.addUser(user, passwod, new ModelUserFirebase.IAddUser() {
+            @Override
+            public void onComplete(User user) {
+                callback.onComplete(user);
             }
         });
     }
