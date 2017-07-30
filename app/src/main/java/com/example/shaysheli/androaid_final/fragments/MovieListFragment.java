@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.shaysheli.androaid_final.Model.User;
 import com.example.shaysheli.androaid_final.R;
 import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.Model.Movie;
@@ -33,6 +34,7 @@ public class MovieListFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     public static FragmentTransaction tran;
     public static Boolean adminOptions;
+    public static ArrayList<Movie> myUserMovies = null;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -75,17 +77,20 @@ public class MovieListFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            Model.instance.getAllMovies(new Model.IGetAllMoviesCallback() {
-                @Override
-                public void onComplete(ArrayList<Movie> movies) {
-                    recyclerView.setAdapter(new MymovieRecyclerViewAdapter(movies, mListener));
-                }
+            if (myUserMovies != null){
+                recyclerView.setAdapter(new MymovieRecyclerViewAdapter(myUserMovies, mListener));
+            } else
+                Model.instance.getAllMovies(new Model.IGetAllMoviesCallback() {
+                    @Override
+                    public void onComplete(ArrayList<Movie> movies) {
+                        recyclerView.setAdapter(new MymovieRecyclerViewAdapter(movies, mListener));
+                    }
 
-                @Override
-                public void onCancel() {
+                    @Override
+                    public void onCancel() {
 
-                }
-            });
+                    }
+                });
         }
         return view;
     }
@@ -140,6 +145,15 @@ public class MovieListFragment extends Fragment {
                 tran.replace(R.id.main_container, details).commit();
 
                 break;
+            case R.id.my_movies:
+                Model.instance.getCurrentUser(new Model.IGetCurrentUserCallback() {
+                    @Override
+                    public void onComplete(User currentUser) {
+                        changeViewByUserId(currentUser.id);
+                    }
+                });
+
+                break;
             case R.id.del_movies:
                 Model.instance.rmMovies();
             case android.R.id.home:
@@ -153,5 +167,24 @@ public class MovieListFragment extends Fragment {
         }
 
         return true;
+    }
+
+    public void changeViewByUserId(final String userId) {
+
+        Model.instance.getAllMovies(new Model.IGetAllMoviesCallback() {
+            @Override
+            public void onComplete(ArrayList<Movie> movies) {
+                for (Movie mv : movies) {
+                    if (!mv.userId.equals(userId)) {
+                        movies.remove(mv);
+                    }
+                }
+
+                myUserMovies = movies;
+            }
+            @Override
+            public void onCancel() {
+            }
+        });
     }
 }

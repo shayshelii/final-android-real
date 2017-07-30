@@ -4,4 +4,7 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="add new"
         android:showAsAction="ifRoom"/>
+    <item android:id="@+id/my_movies"
+        android:title="My Movies"
+        android:showAsAction="ifRoom"/>
 </menu>

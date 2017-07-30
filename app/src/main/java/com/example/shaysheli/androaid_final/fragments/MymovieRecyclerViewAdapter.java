@@ -105,4 +105,6 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
             return super.toString() + " '" + mContentView.getText() + "'";
         }
     }
+
+
 }

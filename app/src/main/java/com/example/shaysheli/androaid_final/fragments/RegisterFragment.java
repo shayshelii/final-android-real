@@ -186,6 +186,5 @@ public class RegisterFragment extends Fragment {
                                 txtEmail.getText().toString(),
                                 false);
         // TODO: Update DB
-
     }
 }
