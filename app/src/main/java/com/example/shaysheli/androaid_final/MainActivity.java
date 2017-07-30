@@ -5,20 +5,25 @@ import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
+import com.example.shaysheli.androaid_final.Model.User;
 import com.example.shaysheli.androaid_final.fragments.AddOrEditFragment;
+import com.example.shaysheli.androaid_final.fragments.AdminPanelFragment;
 import com.example.shaysheli.androaid_final.fragments.LoginFragment;
 import com.example.shaysheli.androaid_final.Model.Movie;
 import com.example.shaysheli.androaid_final.fragments.MovieDetailFragment;
 import com.example.shaysheli.androaid_final.fragments.MovieListFragment;
 import com.example.shaysheli.androaid_final.fragments.RegisterFragment;
+import com.example.shaysheli.androaid_final.fragments.UserManagementFragment;
 
 public class MainActivity extends ActionBarActivity implements LoginFragment.OnFragmentInteractionListener,
                                                                MovieListFragment.OnListFragmentInteractionListener,
                                                                MovieDetailFragment.OnFragmentInteractionListener,
                                                                AddOrEditFragment.OnFragmentInteractionListener,
-                                                               RegisterFragment.OnFragmentInteractionListener
+                                                               RegisterFragment.OnFragmentInteractionListener,
+                                                               AdminPanelFragment.OnFragmentInteractionListener,
+                                                               UserManagementFragment.OnListFragmentInteractionListener
 {
-    LoginFragment loginFragmentInstance;
+    AdminPanelFragment loginFragmentInstance;
     MovieListFragment movieListFragmentInstance;
     MovieDetailFragment movieDetailFragmentInstance;
 
@@ -31,7 +36,7 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (savedInstanceState == null)
         {
-            this.loginFragmentInstance =  LoginFragment.newInstance();
+            this.loginFragmentInstance =  AdminPanelFragment.newInstance();
             tran = getFragmentManager().beginTransaction();
             tran.add(R.id.main_container, this.loginFragmentInstance);
             tran.commit();
@@ -76,7 +81,7 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
 
     @Override
     public void onFragmentInteractionAddOrEdit() {
-        MovieListFragment listFragment = MovieListFragment.newInstance(1);
+        MovieListFragment listFragment = MovieListFragment.newInstance(1, false);
         tran = getFragmentManager().beginTransaction();
         tran.addToBackStack("backToListOrDetail");
         tran.replace(R.id.main_container, listFragment);
@@ -85,5 +90,19 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
 
     @Override
     public void onFragmentRegisterInteraction() {
+    }
+
+    @Override
+    public void onFragmentAdminChooseInteraction(Fragment frag) {
+        tran = getFragmentManager().beginTransaction();
+        tran.addToBackStack("backToAdminPanel");
+        tran = getFragmentManager().beginTransaction();
+        tran.replace(R.id.main_container, frag);
+        tran.commit();
+    }
+
+    @Override
+    public void onUserListFragmentInteraction(User item){
+
     }
 }

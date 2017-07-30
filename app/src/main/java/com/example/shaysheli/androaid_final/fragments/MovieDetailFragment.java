@@ -154,7 +154,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
 
                 break;
             case android.R.id.home:
-                MovieListFragment listFragment = MovieListFragment.newInstance(1);
+                MovieListFragment listFragment = MovieListFragment.newInstance(1, MovieListFragment.adminOptions);
                 tran = getFragmentManager().beginTransaction();
                 tran.replace(R.id.main_container, listFragment);
                 tran.commit();

@@ -32,6 +32,7 @@ public class MovieListFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     public static FragmentTransaction tran;
+    public static Boolean adminOptions;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -40,9 +41,10 @@ public class MovieListFragment extends Fragment {
     public MovieListFragment() {
     }
 
-    public static MovieListFragment newInstance(int columnCount) {
+    public static MovieListFragment newInstance(int columnCount, Boolean adminOptions) {
         MovieListFragment fragment = new MovieListFragment();
         Bundle args = new Bundle();
+        MovieListFragment.adminOptions = adminOptions;
         args.putInt(ARG_COLUMN_COUNT, columnCount);
         fragment.setArguments(args);
         return fragment;
@@ -122,7 +124,11 @@ public class MovieListFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main, menu);
+        if (MovieListFragment.adminOptions)
+            inflater.inflate(R.menu.menu_main_admin, menu);
+        else
+            inflater.inflate(R.menu.menu_main, menu);
+
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -134,8 +140,10 @@ public class MovieListFragment extends Fragment {
                 tran.replace(R.id.main_container, details).commit();
 
                 break;
+            case R.id.del_movies:
+                Model.instance.rmMovies();
             case android.R.id.home:
-                MovieListFragment listFragment = MovieListFragment.newInstance(1);
+                MovieListFragment listFragment = MovieListFragment.newInstance(1, MovieListFragment.adminOptions);
                 tran = getFragmentManager().beginTransaction();
                 tran.replace(R.id.main_container, listFragment);
                 tran.commit();

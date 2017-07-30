@@ -51,4 +51,17 @@
                 android:isIndicator="true" />
         </LinearLayout>
     </LinearLayout>
+
+
+    <CheckBox
+        android:id="@+id/strow_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:scaleX="1.5"
+        android:scaleY="1.5"
+        android:focusable="false"
+        android:layout_margin="10dp"
+        />
 </LinearLayout>

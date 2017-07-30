@@ -1,5 +1,8 @@
 package com.example.shaysheli.androaid_final.Model;
 
+import com.example.shaysheli.androaid_final.fragments.MovieListFragment;
+import com.example.shaysheli.androaid_final.fragments.MymovieRecyclerViewAdapter;
+
 import java.util.ArrayList;
 
 /**
@@ -70,6 +73,18 @@ public class Model {
                 callback.onComplete(success);
             }
         });
+    }
+
+
+    public void rmMovies() {
+        for (Movie mv : MymovieRecyclerViewAdapter.checkedMovieToDel.values()) {
+            Model.instance.rmMovie(mv, new Model.IRemoveMovie() {
+                @Override
+                public void onComplete(boolean success) {
+
+                }
+            });
+        }
     }
 
 
