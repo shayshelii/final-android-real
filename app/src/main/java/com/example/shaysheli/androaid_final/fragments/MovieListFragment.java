@@ -68,7 +68,7 @@ public class MovieListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
-        Log.d("dev", "onCreateView");
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -80,7 +80,6 @@ public class MovieListFragment extends Fragment {
             }
 
             if (MovieListFragment.mvMyList != null) {
-                Log.d("dev", "test");
                 recyclerView.setAdapter(new MymovieRecyclerViewAdapter(MovieListFragment.mvMyList, mListener));
             } else
                 Model.instance.getAllMovies(new Model.IGetAllMoviesCallback() {
@@ -154,11 +153,6 @@ public class MovieListFragment extends Fragment {
                     @Override
                     public void onComplete(User currentUser) {
                         changeViewByUserId(currentUser.id);
-
-                        MovieListFragment listFragment = MovieListFragment.newInstance(1, MovieListFragment.adminOptions);
-                        tran = getFragmentManager().beginTransaction();
-                        tran.replace(R.id.main_container, listFragment);
-                        tran.commit();
                     }
                 });
 
@@ -197,6 +191,11 @@ public class MovieListFragment extends Fragment {
 
                 MovieListFragment.mvMyList = movies;
                 (recyclerView.getAdapter()).notifyDataSetChanged();
+
+                MovieListFragment listFragment = MovieListFragment.newInstance(1, MovieListFragment.adminOptions);
+                tran = getFragmentManager().beginTransaction();
+                tran.replace(R.id.main_container, listFragment);
+                tran.commit();
             }
             @Override
             public void onCancel() {
