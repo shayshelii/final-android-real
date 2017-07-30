@@ -3,7 +3,6 @@ package com.example.shaysheli.androaid_final.Model;
 import android.support.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -50,7 +49,7 @@ public class ModelUserFirebase {
                 callback.onComplete(null);
             }
             else {
-                getUserById(firebaseUser.getUid(), new IGetUserById() {
+                getUserById(firebaseUser.getUid(), new IGetUserByIdCallback() {
                     @Override
                     public void onComplete(User user) {
                         currentUser = new User(user);
@@ -69,9 +68,10 @@ public class ModelUserFirebase {
 
     interface IAddUser {
         void onComplete(User user);
+        void onError(String reason);
     }
     public void addUser(final User user, String password, final IAddUser callback) {
-        firebaseAuth.createUserWithEmailAndPassword(user.email, password)
+        firebaseAuth.createUserWithEmailAndPassword(user.getEmail(), password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -79,21 +79,23 @@ public class ModelUserFirebase {
                                 firebaseAuth.getCurrentUser() : null;
 
                         if (firebaseUser != null) {
-                            usersReference.child(firebaseUser.getUid()).setValue(user);
-                            callback.onComplete(user);
+                            User savedUser = new User(user);
+                            savedUser.setId(firebaseUser.getUid());
+                            usersReference.child(firebaseUser.getUid()).setValue(savedUser);
+                            callback.onComplete(savedUser);
                         }
                         else {
-                            callback.onComplete(null);
+                            callback.onError(task.getException().getMessage());
                         }
                     }
                 });
     }
 
-    interface IGetUserById {
+    interface IGetUserByIdCallback {
         void onComplete(User user);
         void onCancel();
     }
-    public void getUserById(String id, final IGetUserById callback) {
+    public void getUserById(String id, final IGetUserByIdCallback callback) {
         usersReference.child(id).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

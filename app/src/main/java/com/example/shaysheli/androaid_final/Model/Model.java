@@ -1,6 +1,5 @@
 package com.example.shaysheli.androaid_final.Model;
 
-import com.example.shaysheli.androaid_final.fragments.MovieListFragment;
 import com.example.shaysheli.androaid_final.fragments.MymovieRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -134,6 +133,7 @@ public class Model {
 
     public interface IAddUser {
         void onComplete(User user);
+        void onError(String reason);
     }
     public void addUser(User user, String password, final IAddUser callback ) {
         modelUserFirebase.addUser(user, password, new ModelUserFirebase.IAddUser() {
@@ -141,15 +141,20 @@ public class Model {
             public void onComplete(User user) {
                 callback.onComplete(user);
             }
+
+            @Override
+            public void onError(String reason) {
+                callback.onError(reason);
+            }
         });
     }
 
-    public interface IGetUserById {
+    public interface IGetUserByIdCallback {
         void onComplete(User user);
         void onCancel();
     }
-    public void GetUserById(String id, final IGetUserById callback) {
-        modelUserFirebase.getUserById(id, new ModelUserFirebase.IGetUserById() {
+    public void getUserById(String id, final IGetUserByIdCallback callback) {
+        modelUserFirebase.getUserById(id, new ModelUserFirebase.IGetUserByIdCallback() {
             @Override
             public void onComplete(User user) {
                 callback.onComplete(user);
