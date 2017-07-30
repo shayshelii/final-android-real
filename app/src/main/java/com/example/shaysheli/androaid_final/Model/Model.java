@@ -191,4 +191,16 @@ public class Model {
             }
         });
     }
+
+    public interface IUpdateUserCallback {
+        void onComplete(boolean success);
+    }
+    public void updateUser(User user, final IUpdateUserCallback callback) {
+        modelUserFirebase.updateUser(user, new ModelUserFirebase.IGetUpdateUserCallback() {
+            @Override
+            public void onComplete(boolean success) {
+                callback.onComplete(success);
+            }
+        });
+    }
 }
