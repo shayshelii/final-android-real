@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.example.shaysheli.androaid_final.Model.User;
 import com.example.shaysheli.androaid_final.R;
-import com.example.shaysheli.androaid_final.fragments.dummy.DummyContent;
 
 import java.util.LinkedList;
 
@@ -77,7 +76,7 @@ public class UserManagementFragment extends Fragment {
                 }
             });*/
             LinkedList<User>  s = new LinkedList<>();
-            s.add(new User("d","d","d","d","d",true));
+            s.add(new User("d","d",true));
             recyclerView.setAdapter(new MyUserManagementRecyclerViewAdapter(s, mListener));
         }
         return view;

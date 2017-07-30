@@ -14,4 +14,5 @@ public class Movie {
     public Boolean checked;
     public String description;
     public String rate;
+    public String userId;
 }
