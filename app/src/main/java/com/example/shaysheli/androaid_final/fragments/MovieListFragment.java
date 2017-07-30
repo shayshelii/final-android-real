@@ -76,7 +76,7 @@ public class MovieListFragment extends Fragment {
             Model.instance.getAllMovies(new Model.IGetAllMoviesCallback() {
                 @Override
                 public void onComplete(ArrayList<Movie> movies) {
-                    recyclerView.setAdapter(new ListAdapter(movies, mListener));
+                    recyclerView.setAdapter(new MymovieRecyclerViewAdapter(movies, mListener));
                 }
 
                 @Override

@@ -29,7 +29,7 @@ public class ModelFirebase {
         void onCancel();
     }
     public void getAllMovies(final IGetAllMoviesCallback callback){
-        movieReference.addValueEventListener(new ValueEventListener() {
+        movieReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<Movie> movies = new ArrayList<>();

@@ -110,9 +110,6 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
                     edtRate.setRating(Float.parseFloat(mvEdit.rate));
                     datePicker.setText(mvEdit.dateCreated);
                 }
-
-        }
-
                 @Override
                 public void onCancel() {
 
