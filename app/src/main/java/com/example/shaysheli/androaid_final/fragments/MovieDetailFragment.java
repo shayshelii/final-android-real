@@ -15,6 +15,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 
+import com.example.shaysheli.androaid_final.Model.User;
 import com.example.shaysheli.androaid_final.R;
 import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.Model.Movie;
@@ -42,7 +43,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
     public TextView movieDescription;
     public Button movieRate;
     public RatingBar movieRating;
-
+    public static Boolean detailOfUser;
     public MovieDetailFragment() {
         // Required empty public constructor
     }
@@ -65,7 +66,22 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
+        Model.instance.getCurrentUser(new Model.IGetCurrentUserCallback() {
+            @Override
+            public void onComplete(final User currentUser) {
+                Model.instance.getMovieByID(getArguments().getString(MOVIE_ID), new Model.IGetMovieCallback() {
+                    @Override
+                    public void onComplete(Movie mv) {
+                        setHasOptionsMenu(currentUser.getId().equals(mv.userId));
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                });
+            }
+        });
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             MovieID = getArguments().getString(MOVIE_ID);

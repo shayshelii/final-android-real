@@ -134,6 +134,8 @@ public class MovieListFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         if (MovieListFragment.adminOptions)
             inflater.inflate(R.menu.menu_main_admin, menu);
+        else if (MovieListFragment.mvMyList != null)
+            inflater.inflate(R.menu.menu_main_all_movies, menu);
         else
             inflater.inflate(R.menu.menu_main, menu);
 
@@ -146,6 +148,16 @@ public class MovieListFragment extends Fragment {
                 AddOrEditFragment details = AddOrEditFragment.newInstance(null, "Add");
                 tran = getFragmentManager().beginTransaction();
                 tran.replace(R.id.main_container, details).commit();
+
+                break;
+            case R.id.all_movies:
+                MovieListFragment.mvMyList = null;
+                (recyclerView.getAdapter()).notifyDataSetChanged();
+
+                MovieListFragment listFragments = MovieListFragment.newInstance(1, MovieListFragment.adminOptions);
+                tran = getFragmentManager().beginTransaction();
+                tran.replace(R.id.main_container, listFragments);
+                tran.commit();
 
                 break;
             case R.id.my_movies:
