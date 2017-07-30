@@ -3,15 +3,22 @@ package com.example.shaysheli.androaid_final.fragments;
 import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
+import com.example.shaysheli.androaid_final.Model.Model;
+import com.example.shaysheli.androaid_final.Model.User;
 import com.example.shaysheli.androaid_final.R;
 
 public class LoginFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
+
+    private EditText emailEditText;
+    private EditText passwordEditText;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -42,6 +49,9 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+        emailEditText = (EditText) view.findViewById(R.id.editText_email);
+        passwordEditText = (EditText) view.findViewById(R.id.editText_pw);
+
         Button btnSignUp = (Button) view.findViewById(R.id.loginbtn_signup);
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,8 +65,25 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO: CHECK IF EXIST AND IF ADMIN
-                MovieListFragment listFragment =  MovieListFragment.newInstance(1, false);
-                onButtonPressed(listFragment);
+
+                String email = emailEditText.getText().toString();
+                String password = passwordEditText.getText().toString();
+
+                // TODO: 7/30/17 Show error when fields are empty
+
+                Model.instance.userLogin(email, password, new Model.IGetUserLoginCallback() {
+                    @Override
+                    public void onComplete(User user) {
+                        if (user != null) {
+                            MovieListFragment listFragment = MovieListFragment.newInstance(1, false);
+                            onButtonPressed(listFragment);
+                        }
+                        else {
+                            // TODO: 7/30/17 User not found -> must handle
+                            Log.d("DEBUG IT", "no user found");
+                        }
+                    }
+                });
             }
         });
 
