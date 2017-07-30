@@ -10,10 +10,20 @@ public class User {
     public String email;
     public Boolean isAdmin;
 
+    public User () {
+
+    }
+
     public User(String name, String email, Boolean isAdmin) {
         this.name = name;
         this.email = email;
         this.isAdmin = isAdmin;
+    }
+
+    public User(User other) {
+        this.name = other.getName();
+        this.email = other.getEmail();
+        this.isAdmin = other.getAdmin();
     }
 
     public String getId() {

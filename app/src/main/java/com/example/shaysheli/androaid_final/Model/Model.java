@@ -1,10 +1,6 @@
 package com.example.shaysheli.androaid_final.Model;
 
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
-
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by ShaySheli on 09/06/2017.
@@ -109,20 +105,44 @@ public class Model {
 
     // TODO: 7/30/17 users options!
 
-    public User getCurrentUser() {
-        User user = modelUserFirebase.getCurrentUser();
-
-        return user;
+    public interface IGetCurrentUserCallback {
+        void onComplete(User currentUser);
+    }
+    public void getCurrentUser(final IGetCurrentUserCallback callback) {
+        modelUserFirebase.getCurrentUser(new ModelUserFirebase.IGetCurrentUserCallback() {
+            @Override
+            public void onComplete(User user) {
+                callback.onComplete(user);
+            }
+        });
     }
 
-    public interface IGetUser {
+    public interface IAddUser {
         void onComplete(User user);
     }
-    public void addUser(User user, String passwod, final IGetUser callback ) {
+    public void addUser(User user, String passwod, final IAddUser callback ) {
         modelUserFirebase.addUser(user, passwod, new ModelUserFirebase.IAddUser() {
             @Override
             public void onComplete(User user) {
                 callback.onComplete(user);
+            }
+        });
+    }
+
+    public interface IGetUserById {
+        void onComplete(User user);
+        void onCancel();
+    }
+    public void GetUserById(String id, final IGetUserById callback) {
+        modelUserFirebase.getUserById(id, new ModelUserFirebase.IGetUserById() {
+            @Override
+            public void onComplete(User user) {
+                callback.onComplete(user);
+            }
+
+            @Override
+            public void onCancel() {
+                callback.onCancel();
             }
         });
     }
