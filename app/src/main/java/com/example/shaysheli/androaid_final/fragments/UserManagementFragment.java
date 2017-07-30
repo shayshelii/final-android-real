@@ -10,9 +10,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.Model.User;
 import com.example.shaysheli.androaid_final.R;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 /**
@@ -64,7 +66,7 @@ public class UserManagementFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            /*Model.instance.getAllUsers(new Model.IGetAllUsersCallback() {
+            Model.instance.getAllUsers(new Model.IGetAllUsersCallback() {
                 @Override
                 public void onComplete(ArrayList<User> users) {
                     recyclerView.setAdapter(new MyUserManagementRecyclerViewAdapter(users, mListener));
@@ -74,10 +76,11 @@ public class UserManagementFragment extends Fragment {
                 public void onCancel() {
 
                 }
-            });*/
-            LinkedList<User>  s = new LinkedList<>();
-            s.add(new User("d","d",true));
-            recyclerView.setAdapter(new MyUserManagementRecyclerViewAdapter(s, mListener));
+            });
+
+//            LinkedList<User>  s = new LinkedList<>();
+//            s.add(new User("d","d",true));
+//            recyclerView.setAdapter(new MyUserManagementRecyclerViewAdapter(s, mListener));
         }
         return view;
     }

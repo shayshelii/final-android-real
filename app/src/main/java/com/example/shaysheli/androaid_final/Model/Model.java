@@ -173,4 +173,22 @@ public class Model {
             }
         });
     }
+
+    public interface IGetAllUsersCallback{
+        void onComplete(ArrayList<User> users);
+        void onCancel();
+    }
+    public void getAllUsers(final IGetAllUsersCallback callback) {
+        modelUserFirebase.getAllUsers(new ModelUserFirebase.IGetAllUsersCallback() {
+            @Override
+            public void onComplete(ArrayList<User> users) {
+                callback.onComplete(users);
+            }
+
+            @Override
+            public void onCancel() {
+                callback.onCancel();
+            }
+        });
+    }
 }
