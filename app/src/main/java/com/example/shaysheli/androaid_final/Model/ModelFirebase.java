@@ -60,6 +60,7 @@ public class ModelFirebase {
 
                 for (DataSnapshot snap: dataSnapshot.getChildren()) {
                     Movie mv = snap.getValue(Movie.class);
+                    mv.checked = false;
                     movies.add(mv);
                 }
 

@@ -55,7 +55,7 @@ public class LoginFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO: CHECK IF EXIST AND IF ADMIN
-                MovieListFragment listFragment =  MovieListFragment.newInstance(1);
+                MovieListFragment listFragment =  MovieListFragment.newInstance(1, false);
                 onButtonPressed(listFragment);
             }
         });

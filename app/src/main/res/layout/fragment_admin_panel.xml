@@ -6,22 +6,24 @@
     android:orientation="vertical"
     tools:context="com.example.shaysheli.androaid_final.fragments.AdminPanelFragment">
 
-    <TextView
+    <Button
+        android:id="@+id/admin_user_btn"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:text="Manage Users"
         android:textSize="35dp"
-        android:clickable="true"
+        android:background="@android:color/transparent"
         android:textColor="@color/white_greyish"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"/>
-    <TextView
+    <Button
+        android:id="@+id/admin_movies_btn"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:background="@android:color/transparent"
         android:textColor="@color/white_greyish"
         android:text="Manage Movies"
         android:textSize="35dp"
-        android:clickable="true"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"/>
 

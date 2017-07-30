@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -11,6 +12,8 @@ import com.example.shaysheli.androaid_final.R;
 import com.example.shaysheli.androaid_final.Model.Movie;
 import com.example.shaysheli.androaid_final.fragments.MovieListFragment.OnListFragmentInteractionListener;
 
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 
 /**
@@ -22,6 +25,7 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
 
     private final List<Movie> mValues;
     private final OnListFragmentInteractionListener mListener;
+    public static Hashtable<String, Movie> checkedMovieToDel = new Hashtable<>();
 
     public MymovieRecyclerViewAdapter(List<Movie> items, OnListFragmentInteractionListener listener) {
         mValues = items;
@@ -37,13 +41,31 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Movie wantedMovie =  mValues.get(position);
+        final Movie wantedMovie =  mValues.get(position);
 
         holder.mItem = wantedMovie;
         holder.mIdView.setText(wantedMovie.id);
         holder.mContentView.setText(wantedMovie.name);
         holder.mRaiting.setRating(Float.parseFloat(wantedMovie.rate));
+        if (MovieListFragment.adminOptions) {
+            holder.mCB.setVisibility(View.VISIBLE);
+            holder.mCB.setChecked(wantedMovie.checked);
+        }
 
+        holder.mCB.setTag(position);
+        holder.mCB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String pos = v.getTag().toString();
+                Movie mv = MymovieRecyclerViewAdapter.checkedMovieToDel.get(pos);
+                if (mv != null)
+                    checkedMovieToDel.remove(pos);
+                else {
+                    checkedMovieToDel.put(pos, wantedMovie);
+                    wantedMovie.checked = !wantedMovie.checked;
+                }
+            }
+        });
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,6 +88,7 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
         public final TextView mIdView;
         public final TextView mContentView;
         public final RatingBar mRaiting;
+        public final CheckBox mCB;
         public Movie mItem;
 
         public ViewHolder(View view) {
@@ -74,6 +97,7 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
             mIdView = (TextView) view.findViewById(R.id.strow_id);
             mContentView = (TextView) view.findViewById(R.id.strow_name);
             mRaiting = (RatingBar) view.findViewById(R.id.strow_rating);
+            mCB = (CheckBox) view.findViewById(R.id.strow_cb);
         }
 
         @Override
