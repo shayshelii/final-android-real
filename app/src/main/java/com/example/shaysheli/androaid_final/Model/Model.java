@@ -165,8 +165,8 @@ public class Model {
     public interface IGetUserLoginCallback {
         void onComplete(User user);
     }
-    public void userLogin(User user, String password , final IGetUserLoginCallback callback) {
-        modelUserFirebase.userLogin(user, password, new ModelUserFirebase.IGetUserLoginCallback() {
+    public void userLogin(String email, String password , final IGetUserLoginCallback callback) {
+        modelUserFirebase.userLogin(email, password, new ModelUserFirebase.IGetUserLoginCallback() {
             @Override
             public void onComplete(User user) {
                 callback.onComplete(user);

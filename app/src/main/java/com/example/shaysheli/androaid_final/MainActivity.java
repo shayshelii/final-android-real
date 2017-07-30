@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
                                                                AdminPanelFragment.OnFragmentInteractionListener,
                                                                UserManagementFragment.OnListFragmentInteractionListener
 {
-    AdminPanelFragment loginFragmentInstance;
+    LoginFragment loginFragmentInstance;
     MovieListFragment movieListFragmentInstance;
     MovieDetailFragment movieDetailFragmentInstance;
 
@@ -36,7 +36,7 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         if (savedInstanceState == null)
         {
-            this.loginFragmentInstance =  AdminPanelFragment.newInstance();
+            this.loginFragmentInstance =  loginFragmentInstance.newInstance();
             tran = getFragmentManager().beginTransaction();
             tran.add(R.id.main_container, this.loginFragmentInstance);
             tran.commit();

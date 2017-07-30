@@ -17,12 +17,13 @@
         android:layout_margin="50dp"/>
 
     <EditText
-        android:id="@+id/editText_username"
+        android:id="@+id/editText_email"
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_gravity="center"
         android:textColorHint="@color/white_greyish"
-        android:hint="User Name"
+        android:hint="Email"
+        android:inputType="textEmailAddress"
         android:layout_margin="5dp"/>
 
     <EditText

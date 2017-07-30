@@ -111,19 +111,24 @@ public class ModelUserFirebase {
     interface IGetUserLoginCallback {
         void onComplete(User user);
     }
-    public void userLogin(User user, String password , final IGetUserLoginCallback callback) {
-        firebaseAuth.signInWithEmailAndPassword(user.getEmail(), password)
-                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-            @Override
-            public void onSuccess(AuthResult authResult) {
-                getCurrentUser(new IGetCurrentUserCallback() {
+    public void userLogin(String email, String password , final IGetUserLoginCallback callback) {
+        firebaseAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
-                    public void onComplete(User user) {
-                        callback.onComplete(user);
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()) {
+                            callback.onComplete(null);
+                        }
+                        else {
+                            getCurrentUser(new IGetCurrentUserCallback() {
+                                @Override
+                                public void onComplete(User user) {
+                                    callback.onComplete(user);
+                                }
+                            });
+                        }
                     }
                 });
-            }
-        });
     }
 
     interface IGetAllUsersCallback {
