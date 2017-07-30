@@ -17,10 +17,34 @@ public class ModelFirebase {
     private FirebaseDatabase database;
     private DatabaseReference movieReference;
 
+
     public ModelFirebase() {
         database = FirebaseDatabase.getInstance();
         movieReference = database.getReference(MOVIES_KEY);
+    }
 
+    interface IGetMoviesId {
+        void getId(int id);
+    }
+    public void getMoviesId(final IGetMoviesId callback) {
+        DatabaseReference reference = database.getReference("MoviesId");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int id = dataSnapshot.getValue(int.class);
+                callback.getId(id);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void setMoviesId(int id) {
+        DatabaseReference reference = database.getReference("MoviesId");
+        reference.setValue(id);
     }
 
     // works with firebase
@@ -50,8 +74,17 @@ public class ModelFirebase {
     }
 
     // works with firebase
-    public void addMovie(Movie mv){
-        movieReference.child(mv.id).setValue(mv);
+
+    public void addMovie(final Movie mv){
+        getMoviesId(new IGetMoviesId() {
+            @Override
+            public void getId(int id) {
+                mv.id = id + "";
+                id++;
+                setMoviesId(id);
+                movieReference.child(mv.id).setValue(mv);
+            }
+        });
     }
 
     interface IGetMovieCallback {
@@ -81,8 +114,9 @@ public class ModelFirebase {
     public void rmMovie(Movie mv, final IRemoveMovieCallback callback) {
         movieReference.child(mv.id).removeValue(new DatabaseReference.CompletionListener() {
             @Override
-            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+            public void onComplete(final DatabaseError databaseError, DatabaseReference databaseReference) {
                 callback.onComplete(databaseError == null);
+
             }
         });
     }

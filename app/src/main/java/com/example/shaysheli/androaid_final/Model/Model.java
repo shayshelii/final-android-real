@@ -9,32 +9,14 @@ import java.util.Calendar;
 
 public class Model {
     public final static Model instance = new Model();
-    private static int id = 1;
     private ModelFirebase modelFirebase;
 
     private Model(){
-        Calendar c = Calendar.getInstance();
-
         modelFirebase = new ModelFirebase();
-
-        for(int i = 0; i < 5; i++) {
-            Movie mv = new Movie();
-            mv.name = "Harry Potter " + i;
-            mv.id = id + "";
-            mv.rate = i + "";
-            mv.dateCreated = c.getTime().toString();
-            data.add(i, mv);
-            id++;
-        }
     }
-
-    private ArrayList<Movie> data = new ArrayList<>();
 
     // works with firebase
     public void addMovie(Movie mv){
-        mv.id = ++id + "";
-        mv.imageUrl = "../res/drawable/grid.png";
-
         modelFirebase.addMovie(mv);
     }
 
@@ -84,7 +66,6 @@ public class Model {
         modelFirebase.rmMovie(mv, new ModelFirebase.IRemoveMovieCallback() {
             @Override
             public void onComplete(boolean success) {
-                id--;
                 callback.onComplete(success);
             }
         });

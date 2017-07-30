@@ -178,33 +178,47 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
         mvEdit.imageUrl = "../res/drawable/grid.png";
         mvEdit.dateCreated = datePicker.getText().toString();
 
-        Model.instance.getMovieByID(idToCheck, new Model.IGetMovieCallback() {
-            @Override
-            public void onComplete(Movie mv) {
-                alertUserAboutAddOrUpdate(v, mv, idToCheck);
-            }
+        // if adding a new movie
+        if (idToCheck.equals("")) {
+            Model.instance.addMovie(mvEdit);
+            showPopupMethod(v, "Student Saved", "SUCCESS");
+            mListener.onFragmentInteractionAddOrEdit();
+        }
+        else {
+            // checking the id
+            Model.instance.getMovieByID(idToCheck, new Model.IGetMovieCallback() {
+                @Override
+                public void onComplete(Movie mv) {
+                    alertUserAboutAddOrUpdate(v, mv, idToCheck);
+                }
 
-            @Override
-            public void onCancel() {
+                @Override
+                public void onCancel() {
 
-            }
-        });
+                }
+            });
+        }
+    }
+
+    private void showPopupMethod(View v, String title, String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        alertDialog.show();
     }
 
     private void alertUserAboutAddOrUpdate(final View v, Movie mv, String idToCheck) {
         if (((mv != null) && (btnAddEdit.getText().equals("Add"))) ||
                 ((!idToCheck.equals(mvEdit.id)) && mv != null) && (btnAddEdit.getText().equals("Edit")))
         {
-            AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
-            alertDialog.setTitle("ID IN USE");
-            alertDialog.setMessage("Choose another id");
-            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            alertDialog.show();
+            showPopupMethod(v, "ID in user", "Choose another id");
         }
         else {
             mvEdit.id = idToCheck;
@@ -212,16 +226,7 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
                 @Override
                 public void onComplete(boolean success) {
                     if (success) {
-                        AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
-                        alertDialog.setTitle("STUDENT SAVED");
-                        alertDialog.setMessage("SUCCESS");
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        dialog.dismiss();
-                                    }
-                                });
-                        alertDialog.show();
+                        showPopupMethod(v, "Student Saved", "SUCCESS");
                     }
 
                     mListener.onFragmentInteractionAddOrEdit();
