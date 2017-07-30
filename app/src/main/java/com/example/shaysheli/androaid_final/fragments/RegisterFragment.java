@@ -184,9 +184,6 @@ public class RegisterFragment extends Fragment {
     public void SignUp(){
         User newUser = new User(txtUserName.getText().toString(),
                                 txtEmail.getText().toString(),
-                                txtPhone.getText().toString(),
-                                txtLocation.getText().toString(),
-                                txtPassword.getText().toString(),
                                 false);
         // TODO: Update DB
 
