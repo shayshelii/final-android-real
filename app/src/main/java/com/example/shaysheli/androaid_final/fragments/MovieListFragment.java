@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,7 @@ import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.Model.Movie;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -34,8 +36,8 @@ public class MovieListFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     public static FragmentTransaction tran;
     public static Boolean adminOptions;
-    public static ArrayList<Movie> myUserMovies = null;
-
+    public RecyclerView recyclerView;
+    public static List<Movie> mvMyList;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -66,19 +68,20 @@ public class MovieListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
-
+        Log.d("dev", "onCreateView");
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            final RecyclerView recyclerView = (RecyclerView) view;
+            recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
 
-            if (myUserMovies != null){
-                recyclerView.setAdapter(new MymovieRecyclerViewAdapter(myUserMovies, mListener));
+            if (MovieListFragment.mvMyList != null) {
+                Log.d("dev", "test");
+                recyclerView.setAdapter(new MymovieRecyclerViewAdapter(MovieListFragment.mvMyList, mListener));
             } else
                 Model.instance.getAllMovies(new Model.IGetAllMoviesCallback() {
                     @Override
@@ -92,6 +95,7 @@ public class MovieListFragment extends Fragment {
                     }
                 });
         }
+
         return view;
     }
 
@@ -150,6 +154,11 @@ public class MovieListFragment extends Fragment {
                     @Override
                     public void onComplete(User currentUser) {
                         changeViewByUserId(currentUser.id);
+
+                        MovieListFragment listFragment = MovieListFragment.newInstance(1, MovieListFragment.adminOptions);
+                        tran = getFragmentManager().beginTransaction();
+                        tran.replace(R.id.main_container, listFragment);
+                        tran.commit();
                     }
                 });
 
@@ -174,13 +183,20 @@ public class MovieListFragment extends Fragment {
         Model.instance.getAllMovies(new Model.IGetAllMoviesCallback() {
             @Override
             public void onComplete(ArrayList<Movie> movies) {
-                for (Movie mv : movies) {
-                    if (!mv.userId.equals(userId)) {
-                        movies.remove(mv);
+                ArrayList<Movie> movieToDel = new ArrayList<>();
+                for (int i = 0; i < movies.size(); i++) {
+                    if (!movies.get(i).userId.equals(userId)) {
+                        movieToDel.add(movies.get(i));
                     }
                 }
 
-                myUserMovies = movies;
+                for (Movie mv :
+                        movieToDel) {
+                    movies.remove(mv);
+                }
+
+                MovieListFragment.mvMyList = movies;
+                (recyclerView.getAdapter()).notifyDataSetChanged();
             }
             @Override
             public void onCancel() {

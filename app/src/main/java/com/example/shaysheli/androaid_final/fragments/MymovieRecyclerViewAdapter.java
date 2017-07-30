@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Movie> mValues;
+    public List<Movie> mValues;
     private final OnListFragmentInteractionListener mListener;
     public static Hashtable<String, Movie> checkedMovieToDel = new Hashtable<>();
 
