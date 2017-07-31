@@ -164,11 +164,6 @@ public class MovieListFragment extends Fragment {
                 tran.add(R.id.main_container, details).commit();
 
                 break;
-            case R.id.sign_out:
-                Model.instance.signOut();
-                mLoginListener.onListToLoginFragmentInteraction();
-
-                break;
             case R.id.admin_panel:
                 AdminPanelFragment adminPanelFragment = AdminPanelFragment.newInstance();
                 tran = getFragmentManager().beginTransaction();
