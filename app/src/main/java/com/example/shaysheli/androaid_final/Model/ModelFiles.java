@@ -28,7 +28,7 @@ public class ModelFiles {
             File dir = Environment.getExternalStoragePublicDirectory(
                     Environment.DIRECTORY_PICTURES);
             if (!dir.exists()) {
-                dir.mkdir();
+                dir.mkdirs();
             }
 
             File imageFile = new File(dir, imageFileName);
