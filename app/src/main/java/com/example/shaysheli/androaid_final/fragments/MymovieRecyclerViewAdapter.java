@@ -1,13 +1,16 @@
 package com.example.shaysheli.androaid_final.fragments;
 
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.R;
 import com.example.shaysheli.androaid_final.Model.Movie;
 import com.example.shaysheli.androaid_final.fragments.MovieListFragment.OnListFragmentInteractionListener;
@@ -52,6 +55,18 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
             holder.mCB.setChecked(wantedMovie.checked);
         }
 
+        Model.instance.getImage(wantedMovie.imageUrl, new Model.IGetImageCallback() {
+            @Override
+            public void onComplete(Bitmap image) {
+                holder.mImage.setImageBitmap(image);
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+
         holder.mCB.setTag(position);
         holder.mCB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,6 +104,7 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
         public final TextView mContentView;
         public final RatingBar mRaiting;
         public final CheckBox mCB;
+        public final ImageView mImage;
         public Movie mItem;
 
         public ViewHolder(View view) {
@@ -98,6 +114,7 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
             mContentView = (TextView) view.findViewById(R.id.strow_name);
             mRaiting = (RatingBar) view.findViewById(R.id.strow_rating);
             mCB = (CheckBox) view.findViewById(R.id.strow_cb);
+            mImage = (ImageView) view.findViewById(R.id.strow_image);
         }
 
         @Override
