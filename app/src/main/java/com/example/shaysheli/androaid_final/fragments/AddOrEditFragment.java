@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +51,7 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
     private static RatingBar edtRate = null;
     private static ImageView edtImage = null;
     private static MyDatePicker datePicker = null;
+    Bitmap movieImageBitmap;
 
     private OnFragmentInteractionListener mListener;
 
@@ -113,6 +115,19 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
                     edtName.setText(mvEdit.name);
                     edtRate.setRating(Float.parseFloat(mvEdit.rate));
                     datePicker.setText(mvEdit.dateCreated);
+
+                    Model.instance.getImage(mvEdit.imageUrl, new Model.IGetImageCallback() {
+                        @Override
+                        public void onComplete(Bitmap image) {
+                            movieImageBitmap = image;
+                            edtImage.setImageBitmap(movieImageBitmap);
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    });
                 }
                 @Override
                 public void onCancel() {
@@ -178,8 +193,8 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) extras.get("data");
-            edtImage.setImageBitmap(imageBitmap);
+            movieImageBitmap = (Bitmap) extras.get("data");
+            edtImage.setImageBitmap(movieImageBitmap);
         }
     }
 
@@ -204,9 +219,32 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
         mvEdit.name = edtName.getText().toString();
         final String idToCheck = edtId.getText().toString();
         mvEdit.rate = edtRate.getRating() + "";
-        mvEdit.imageUrl = "../res/drawable/grid.png";
         mvEdit.dateCreated = datePicker.getText().toString();
 
+        if (movieImageBitmap == null) {
+            mvEdit.imageUrl = "../res/drawable/grid.png";
+            addOrEditSaveMovie(v, idToCheck);
+        }
+        else {
+            long timeStamp = System.currentTimeMillis();
+            String imageName = mvEdit.name + "-" + timeStamp + ".jpeg";
+            Model.instance.saveImage(movieImageBitmap, imageName, new Model.ISaveImageCallback() {
+                @Override
+                public void onComplete(String imageUrl) {
+                    mvEdit.imageUrl = imageUrl;
+                    addOrEditSaveMovie(v, idToCheck);
+                }
+
+                @Override
+                public void onCancel() {
+
+                }
+            });
+
+        }
+    }
+
+    private void addOrEditSaveMovie(final View v, final String idToCheck) {
         // if adding a new movie
         if (idToCheck.equals("")) {
             Model.instance.addMovie(mvEdit);
