@@ -61,7 +61,7 @@ public class LoginFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
         // TODO: 7/31/17 USE SIGNOUT METHOD IF YOU WANT TO SIGNOUT
-//        Model.instance.signOut();
+        // Model.instance.signOut();
 
         Model.instance.getCurrentUser(new Model.IGetCurrentUserCallback() {
             @Override
@@ -80,7 +80,6 @@ public class LoginFragment extends Fragment {
     }
 
     private void actuallyCreateTheView(View view) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         emailEditText = (EditText) view.findViewById(R.id.editText_email);
         passwordEditText = (EditText) view.findViewById(R.id.editText_pw);
 
@@ -90,43 +89,59 @@ public class LoginFragment extends Fragment {
             public void onClick(final View v) {
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
-                Pattern p = Patterns.EMAIL_ADDRESS;
-                Matcher m = p.matcher(email);
 
-                if (email.equals("") || email.length() == 0
-                        || password.equals("") || password.length() == 0)
+                AlertDialog alertDialog = checkFieldValidation(email, password);
 
-                    builder.setMessage("All fields are required.")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    // User cancelled the dialog
-                                }
-                            });
-
-                    // Check if email id valid or not
-                else if (!m.find())
-                    builder.setMessage("Your Email Id is Invalid.")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    emailEditText.requestFocus();
-                                }
-                            });
-                else
+                if (alertDialog != null) {
+                    alertDialog.show();
+                }
+                else {
                     Model.instance.userLogin(email, password, new Model.IGetUserLoginCallback() {
                         @Override
                         public void onComplete(User user) {
                             if (user != null) {
                                 MovieListFragment listFragment = MovieListFragment.newInstance(1, user.isAdmin);
                                 onButtonPressed(listFragment);
-                            }
-                            else {
+                            } else {
                                 // TODO: 7/30/17 User not found -> must handle
-                                 Toast.makeText(v.getContext(), "Authentication Error, Please try again", Toast.LENGTH_SHORT);
+                                Toast.makeText(v.getContext(), "Authentication Error, Please try again", Toast.LENGTH_SHORT);
                             }
                         }
                     });
+                }
             }
         });
+    }
+
+    private AlertDialog checkFieldValidation(String email, String password) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        Pattern p = Patterns.EMAIL_ADDRESS;
+        Matcher m = p.matcher(email);
+
+        if (email.equals("") || email.length() == 0
+                || password.equals("") || password.length() == 0)
+
+            builder.setMessage("All fields are required.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+
+            // Check if email id valid or not
+        else if (!m.find())
+            builder.setMessage("Your Email Id is Invalid.")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            emailEditText.requestFocus();
+                        }
+                    });
+        else {
+            return null;
+        }
+
+        return builder.create();
     }
 
     public final void onButtonPressed(Fragment frag) {
