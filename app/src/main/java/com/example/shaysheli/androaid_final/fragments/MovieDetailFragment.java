@@ -20,20 +20,9 @@ import com.example.shaysheli.androaid_final.R;
 import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.Model.Movie;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MovieDetailFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MovieDetailFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MovieDetailFragment extends Fragment implements View.OnClickListener{
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String MOVIE_ID = "MOVIE_ID";
 
-    // TODO: Rename and change types of parameters
     private String MovieID;
 
     private OnFragmentInteractionListener mListener;
@@ -41,12 +30,8 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
 
     public TextView movieTitle;
     public TextView movieDescription;
-    public Button movieRate;
     public RatingBar movieRating;
-    public static Boolean detailOfUser;
-    public MovieDetailFragment() {
-        // Required empty public constructor
-    }
+    public MovieDetailFragment() {  }
 
     /**
      * Use this factory method to create a new instance of
@@ -159,6 +144,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         inflater.inflate(R.menu.menu_edit, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }

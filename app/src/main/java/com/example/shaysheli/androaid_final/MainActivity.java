@@ -24,7 +24,7 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
                                                                UserManagementFragment.OnListFragmentInteractionListener
 {
     LoginFragment loginFragmentInstance;
-    MovieListFragment movieListFragmentInstance;
+    public static MovieListFragment movieListFragmentInstance;
     MovieDetailFragment movieDetailFragmentInstance;
 
     public static FragmentTransaction tran;
@@ -46,14 +46,14 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
     public void onFragmentInteractionChangeFrag(Fragment frag) {
         tran = getFragmentManager().beginTransaction();
 
-        if (frag instanceof MovieListFragment)
+        if (frag instanceof MovieListFragment) {
             this.movieListFragmentInstance = (MovieListFragment) frag;
-        else {
+            tran.replace(R.id.main_container, frag);
+        } else {
             tran.addToBackStack("backToLogin");
+            tran.add(R.id.main_container, frag);
         }
 
-        tran = getFragmentManager().beginTransaction();
-        tran.replace(R.id.main_container, frag);
         tran.commit();
     }
 

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.shaysheli.androaid_final.MainActivity;
 import com.example.shaysheli.androaid_final.Model.User;
 import com.example.shaysheli.androaid_final.R;
 import com.example.shaysheli.androaid_final.Model.Model;
@@ -58,7 +59,8 @@ public class MovieListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
+        if (savedInstanceState == null) { getFragmentManager().beginTransaction().replace(R.id.main_container, MainActivity.movieListFragmentInstance);
+        }
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -132,6 +134,7 @@ public class MovieListFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
         if (MovieListFragment.adminOptions)
             inflater.inflate(R.menu.menu_main_admin, menu);
         else if (MovieListFragment.mvMyList != null)
@@ -147,7 +150,8 @@ public class MovieListFragment extends Fragment {
             case R.id.add_new:
                 AddOrEditFragment details = AddOrEditFragment.newInstance(null, "Add");
                 tran = getFragmentManager().beginTransaction();
-                tran.replace(R.id.main_container, details).commit();
+                tran.addToBackStack("");
+                tran.add(R.id.main_container, details).commit();
 
                 break;
             case R.id.all_movies:

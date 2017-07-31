@@ -5,6 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -40,6 +43,7 @@ public class LoginFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         super.onCreate(savedInstanceState);
     }
 
@@ -52,14 +56,6 @@ public class LoginFragment extends Fragment {
         emailEditText = (EditText) view.findViewById(R.id.editText_email);
         passwordEditText = (EditText) view.findViewById(R.id.editText_pw);
 
-        Button btnSignUp = (Button) view.findViewById(R.id.loginbtn_signup);
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RegisterFragment registerFragment = RegisterFragment.newInstance();
-                onButtonPressed(registerFragment);
-            }
-        });
         Button btnSignIn = (Button) view.findViewById(R.id.loginbtn_signin);
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,5 +122,24 @@ public class LoginFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteractionChangeFrag(Fragment frag);
+    }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_login, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_up:
+                RegisterFragment registerFragment = RegisterFragment.newInstance();
+                onButtonPressed(registerFragment);
+                break;
+            default:
+                break;
+        }
+
+        return true;
     }
 }
