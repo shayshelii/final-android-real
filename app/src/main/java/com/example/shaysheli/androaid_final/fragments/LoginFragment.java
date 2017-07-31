@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.Model.User;
@@ -51,15 +52,32 @@ public class LoginFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+        Model.instance.getCurrentUser(new Model.IGetCurrentUserCallback() {
+            @Override
+            public void onComplete(User currentUser) {
+                if (currentUser == null) {
+                    actuallyCreateTheView(view);
+                }
+                else{
+                    MovieListFragment listFragment = MovieListFragment.newInstance(1, false);
+                    onButtonPressed(listFragment);
+                }
+            }
+        });
+
+        return view;
+    }
+
+    private void actuallyCreateTheView(View view) {
         emailEditText = (EditText) view.findViewById(R.id.editText_email);
         passwordEditText = (EditText) view.findViewById(R.id.editText_pw);
 
         Button btnSignIn = (Button) view.findViewById(R.id.loginbtn_signin);
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 // TODO: CHECK IF EXIST AND IF ADMIN
 
                 String email = emailEditText.getText().toString();
@@ -76,14 +94,12 @@ public class LoginFragment extends Fragment {
                         }
                         else {
                             // TODO: 7/30/17 User not found -> must handle
-                            Log.d("DEBUG IT", "no user found");
+                             Toast.makeText(v.getContext(), "Authentication Error, Please try again", Toast.LENGTH_SHORT);
                         }
                     }
                 });
             }
         });
-
-        return view;
     }
 
     public final void onButtonPressed(Fragment frag) {
