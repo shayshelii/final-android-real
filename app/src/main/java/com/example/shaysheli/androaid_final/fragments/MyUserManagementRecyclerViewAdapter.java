@@ -4,12 +4,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.shaysheli.androaid_final.Model.User;
 import com.example.shaysheli.androaid_final.R;
 import com.example.shaysheli.androaid_final.fragments.UserManagementFragment.OnListFragmentInteractionListener;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class MyUserManagementRecyclerViewAdapter extends RecyclerView.Adapter<MyUserManagementRecyclerViewAdapter.ViewHolder> {
@@ -32,7 +34,7 @@ public class MyUserManagementRecyclerViewAdapter extends RecyclerView.Adapter<My
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
+        holder.mPhoneView.setText(mValues.get(position).getPhoneNumber());
         holder.mContentView.setText(mValues.get(position).getName());
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
@@ -52,14 +54,14 @@ public class MyUserManagementRecyclerViewAdapter extends RecyclerView.Adapter<My
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
+        public final TextView mPhoneView;
         public final TextView mContentView;
         public User mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.user_manage_id);
+            mPhoneView = (TextView) view.findViewById(R.id.user_manage_phone);
             mContentView = (TextView) view.findViewById(R.id.user_manage_name);
         }
 
