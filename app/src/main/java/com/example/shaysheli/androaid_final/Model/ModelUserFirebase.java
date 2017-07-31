@@ -172,5 +172,6 @@ public class ModelUserFirebase {
 
     public void signOut() {
         firebaseAuth.signOut();
+        currentUser = null;
     }
 }

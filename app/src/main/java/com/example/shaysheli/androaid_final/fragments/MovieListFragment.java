@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -187,6 +186,14 @@ public class MovieListFragment extends Fragment {
                 tran = getFragmentManager().beginTransaction();
                 tran.replace(R.id.main_container, listFragment);
                 tran.commit();
+                break;
+            case R.id.signout:
+                Model.instance.signOut();
+                LoginFragment loginFragment = LoginFragment.newInstance();
+                tran = getFragmentManager().beginTransaction();
+                tran.replace(R.id.main_container, loginFragment);
+                tran.commit();
+
                 break;
             default:
                 break;
