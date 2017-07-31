@@ -2,20 +2,17 @@ package com.example.shaysheli.androaid_final.fragments;
 
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -23,6 +20,7 @@ import android.widget.RatingBar;
 import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.Model.Movie;
 import com.example.shaysheli.androaid_final.Model.MyDatePicker;
+import com.example.shaysheli.androaid_final.Model.User;
 import com.example.shaysheli.androaid_final.R;
 
 import static android.app.Activity.RESULT_OK;
@@ -40,6 +38,7 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_MOVIEID = "MOVIEID";
     private static final String ARG_TYPE = "TYPE";
+    public static final String DEFAULT_MOVIE_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/android-final-60ca1.appspot.com/o/Images%2Funavail.jpg?alt=media&token=3b9a69a6-72bc-4439-9214-f13a4b6e5b56";
 
     // TODO: Rename and change types of parameters
     private String MOVIEID;
@@ -216,32 +215,38 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(final View v) {
-        mvEdit.name = edtName.getText().toString();
-        final String idToCheck = edtId.getText().toString();
-        mvEdit.rate = edtRate.getRating() + "";
-        mvEdit.dateCreated = datePicker.getText().toString();
 
-        if (movieImageBitmap == null) {
-            mvEdit.imageUrl = "../res/drawable/grid.png";
-            addOrEditSaveMovie(v, idToCheck);
-        }
-        else {
-            long timeStamp = System.currentTimeMillis();
-            String imageName = mvEdit.name + "-" + timeStamp + ".jpeg";
-            Model.instance.saveImage(movieImageBitmap, imageName, new Model.ISaveImageCallback() {
-                @Override
-                public void onComplete(String imageUrl) {
-                    mvEdit.imageUrl = imageUrl;
+        Model.instance.getCurrentUser(new Model.IGetCurrentUserCallback() {
+            @Override
+            public void onComplete(User currentUser) {
+                mvEdit.name = edtName.getText().toString();
+                final String idToCheck = edtId.getText().toString();
+                mvEdit.rate = edtRate.getRating() + "";
+                mvEdit.dateCreated = datePicker.getText().toString();
+                mvEdit.userId = currentUser.getId();
+
+                if (movieImageBitmap == null) {
+                    mvEdit.imageUrl = DEFAULT_MOVIE_IMAGE_URL;
                     addOrEditSaveMovie(v, idToCheck);
                 }
+                else {
+                    long timeStamp = System.currentTimeMillis();
+                    String imageName = mvEdit.name + "-" + timeStamp + ".jpeg";
+                    Model.instance.saveImage(movieImageBitmap, imageName, new Model.ISaveImageCallback() {
+                        @Override
+                        public void onComplete(String imageUrl) {
+                            mvEdit.imageUrl = imageUrl;
+                            addOrEditSaveMovie(v, idToCheck);
+                        }
 
-                @Override
-                public void onCancel() {
+                        @Override
+                        public void onCancel() {
 
+                        }
+                    });
                 }
-            });
-
-        }
+            }
+        });
     }
 
     private void addOrEditSaveMovie(final View v, final String idToCheck) {

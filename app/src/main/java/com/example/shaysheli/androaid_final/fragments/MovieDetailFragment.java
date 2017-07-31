@@ -3,6 +3,9 @@ package com.example.shaysheli.androaid_final.fragments;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -79,8 +82,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
 
-        LinearLayout l = (LinearLayout) view.findViewById(R.id.detail_frag);
-        l.setBackground(getActivity().getResources().getDrawable(R.drawable.unavail));
+        final LinearLayout l = (LinearLayout) view.findViewById(R.id.detail_frag);
 
         movieRating = (RatingBar) view.findViewById(R.id.details_movie_rating);
         movieTitle = (TextView) view.findViewById(R.id.details_movie_name);
@@ -90,10 +92,22 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
         Model.instance.getMovieByID(MovieID, new Model.IGetMovieCallback() {
             @Override
             public void onComplete(Movie mv) {
-                Movie currentMovie = mv;
-                movieTitle.setText(currentMovie.name);
-                movieDescription.setText(currentMovie.description);
-                movieRating.setRating(Float.parseFloat(currentMovie.rate));
+                movieTitle.setText(mv.name);
+                movieDescription.setText(mv.description);
+                movieRating.setRating(Float.parseFloat(mv.rate));
+
+                Model.instance.getImage(mv.imageUrl, new Model.IGetImageCallback() {
+                    @Override
+                    public void onComplete(Bitmap image) {
+                        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), image);
+                        l.setBackground(bitmapDrawable);
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                });
             }
 
             @Override
