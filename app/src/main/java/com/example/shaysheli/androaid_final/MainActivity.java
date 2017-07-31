@@ -2,7 +2,10 @@ package com.example.shaysheli.androaid_final;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
 
 import com.example.shaysheli.androaid_final.Model.User;
@@ -28,6 +31,7 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
     public static MovieListFragment movieListFragmentInstance;
     MovieDetailFragment movieDetailFragmentInstance;
 
+    static final int REQUEST_WRITE_STORAGE = 11;
     public static FragmentTransaction tran;
 
     @Override
@@ -35,6 +39,13 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        boolean hasPermission = (ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED);
+        if (!hasPermission) {
+            ActivityCompat.requestPermissions(this,new String[]{
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_WRITE_STORAGE);
+        }
         if (savedInstanceState == null)
         {
             this.loginFragmentInstance =  LoginFragment.newInstance();
