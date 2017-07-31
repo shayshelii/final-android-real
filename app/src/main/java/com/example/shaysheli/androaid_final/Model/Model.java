@@ -1,6 +1,8 @@
 package com.example.shaysheli.androaid_final.Model;
 
 import android.graphics.Bitmap;
+import android.util.Log;
+import android.webkit.URLUtil;
 
 import com.example.shaysheli.androaid_final.fragments.MymovieRecyclerViewAdapter;
 
@@ -217,17 +219,20 @@ public class Model {
         modelUserFirebase.signOut();
     }
 
-    // TODO: 7/31/17 Storage options!
 
     public interface ISaveImageCallback {
         void onComplete(String imageUrl);
         void onCancel();
     }
-    public void saveImage(Bitmap imageBmp, String name, final ISaveImageCallback callback) {
+
+
+    public void saveImage(final Bitmap imageBmp, final String name, final ISaveImageCallback callback) {
         modelStorageFirebase.saveImage(imageBmp, name, new ModelStorageFirebase.ISaveImageCallback() {
             @Override
-            public void onComplete(String imageUrl) {
-                callback.onComplete(imageUrl);
+            public void onComplete(String url) {
+                String fileName = URLUtil.guessFileName(url, null, null);
+                ModelFiles.saveImageToFile(imageBmp,fileName);
+                callback.onComplete(url);
             }
 
             @Override
@@ -235,24 +240,45 @@ public class Model {
                 callback.onCancel();
             }
         });
+
+
     }
 
     public interface IGetImageCallback {
         void onComplete(Bitmap image);
         void onCancel();
     }
-    public void getImage(String imageUrl, final IGetImageCallback callback) {
-        modelStorageFirebase.getImage(imageUrl, new ModelStorageFirebase.IGetImageCallback() {
-            @Override
-            public void onComplete(Bitmap image) {
-                callback.onComplete(image);
-            }
 
+    public void getImage(final String url, final IGetImageCallback callback) {
+        //check if image exsist localy
+        final String fileName = URLUtil.guessFileName(url, null, null);
+        ModelFiles.loadImageFromFileAsynch(fileName, new ModelFiles.LoadImageFromFileAsynch() {
             @Override
-            public void onCancel() {
-                callback.onCancel();
+            public void onComplete(Bitmap bitmap) {
+                if (bitmap != null){
+                    Log.d("TAG","getImage from local success " + fileName);
+                    callback.onComplete(bitmap);
+                }else {
+                    modelStorageFirebase.getImage(url, new ModelStorageFirebase.IGetImageCallback() {
+                        @Override
+                        public void onComplete(Bitmap image) {
+                            String fileName = URLUtil.guessFileName(url, null, null);
+                            Log.d("TAG","getImage from FB success " + fileName);
+                            ModelFiles.saveImageToFile(image,fileName);
+                            callback.onComplete(image);
+                        }
+
+                        @Override
+                        public void onCancel() {
+                            Log.d("TAG","getImage from FB fail ");
+                            callback.onCancel();
+                        }
+                    });
+
+                }
             }
         });
+
     }
 
 }
