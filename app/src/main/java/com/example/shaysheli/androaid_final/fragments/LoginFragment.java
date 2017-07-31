@@ -1,9 +1,12 @@
 package com.example.shaysheli.androaid_final.fragments;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +20,9 @@ import android.widget.Toast;
 import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.Model.User;
 import com.example.shaysheli.androaid_final.R;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
@@ -71,6 +77,7 @@ public class LoginFragment extends Fragment {
     }
 
     private void actuallyCreateTheView(View view) {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         emailEditText = (EditText) view.findViewById(R.id.editText_email);
         passwordEditText = (EditText) view.findViewById(R.id.editText_pw);
 
@@ -78,26 +85,43 @@ public class LoginFragment extends Fragment {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View v) {
-                // TODO: CHECK IF EXIST AND IF ADMIN
-
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
+                Pattern p = Patterns.EMAIL_ADDRESS;
+                Matcher m = p.matcher(email);
 
-                // TODO: 7/30/17 Show error when fields are empty
+                if (email.equals("") || email.length() == 0
+                        || password.equals("") || password.length() == 0)
 
-                Model.instance.userLogin(email, password, new Model.IGetUserLoginCallback() {
-                    @Override
-                    public void onComplete(User user) {
-                        if (user != null) {
-                            MovieListFragment listFragment = MovieListFragment.newInstance(1, user.isAdmin);
-                            onButtonPressed(listFragment);
+                    builder.setMessage("All fields are required.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // User cancelled the dialog
+                                }
+                            });
+
+                    // Check if email id valid or not
+                else if (!m.find())
+                    builder.setMessage("Your Email Id is Invalid.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    emailEditText.requestFocus();
+                                }
+                            });
+                else
+                    Model.instance.userLogin(email, password, new Model.IGetUserLoginCallback() {
+                        @Override
+                        public void onComplete(User user) {
+                            if (user != null) {
+                                MovieListFragment listFragment = MovieListFragment.newInstance(1, user.isAdmin);
+                                onButtonPressed(listFragment);
+                            }
+                            else {
+                                // TODO: 7/30/17 User not found -> must handle
+                                 Toast.makeText(v.getContext(), "Authentication Error, Please try again", Toast.LENGTH_SHORT);
+                            }
                         }
-                        else {
-                            // TODO: 7/30/17 User not found -> must handle
-                             Toast.makeText(v.getContext(), "Authentication Error, Please try again", Toast.LENGTH_SHORT);
-                        }
-                    }
-                });
+                    });
             }
         });
     }

@@ -36,7 +36,6 @@ public class RegisterFragment extends Fragment {
     public RegisterFragment() {}
 
 
-    // TODO: Rename and change types and number of parameters
     public static RegisterFragment newInstance() {
         RegisterFragment fragment = new RegisterFragment();
         Bundle args = new Bundle();
@@ -77,7 +76,6 @@ public class RegisterFragment extends Fragment {
         return v;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed() {
         if (mListener != null) {
             mListener.onFragmentRegisterInteraction();
