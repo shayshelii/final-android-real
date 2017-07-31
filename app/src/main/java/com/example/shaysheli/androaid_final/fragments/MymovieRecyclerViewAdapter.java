@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -50,22 +51,30 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
         holder.mIdView.setText(wantedMovie.id);
         holder.mContentView.setText(wantedMovie.name);
         holder.mRaiting.setRating(Float.parseFloat(wantedMovie.rate));
+        holder.mImage.setTag(holder.mItem.imageUrl);
         if (MovieListFragment.adminOptions) {
             holder.mCB.setVisibility(View.VISIBLE);
             holder.mCB.setChecked(wantedMovie.checked);
         }
 
-        Model.instance.getImage(wantedMovie.imageUrl, new Model.IGetImageCallback() {
-            @Override
-            public void onComplete(Bitmap image) {
-                holder.mImage.setImageBitmap(image);
-            }
+        if (holder.mItem.imageUrl != null && !holder.mItem.imageUrl.isEmpty() && !holder.mItem.imageUrl.equals("")) {
+            holder.mProgressBar.setVisibility(View.VISIBLE);
+            Model.instance.getImage(wantedMovie.imageUrl, new Model.IGetImageCallback() {
+                @Override
+                public void onComplete(Bitmap image) {
+                    String tagUrl = holder.mImage.getTag().toString();
+                    if (tagUrl.equals(holder.mItem.imageUrl)) {
+                        holder.mImage.setImageBitmap(image);
+                        holder.mProgressBar.setVisibility(View.GONE);
+                    }
+                }
 
-            @Override
-            public void onCancel() {
-
-            }
-        });
+                @Override
+                public void onCancel() {
+                    holder.mProgressBar.setVisibility(View.GONE);
+                }
+            });
+        }
 
         holder.mCB.setTag(position);
         holder.mCB.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +115,7 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
         public final CheckBox mCB;
         public final ImageView mImage;
         public Movie mItem;
+        public final ProgressBar mProgressBar;
 
         public ViewHolder(View view) {
             super(view);
@@ -115,6 +125,7 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
             mRaiting = (RatingBar) view.findViewById(R.id.strow_rating);
             mCB = (CheckBox) view.findViewById(R.id.strow_cb);
             mImage = (ImageView) view.findViewById(R.id.strow_image);
+            mProgressBar = (ProgressBar) view.findViewById(R.id.strow_progressBar);
         }
 
         @Override
