@@ -52,7 +52,7 @@ public class MymovieRecyclerViewAdapter extends RecyclerView.Adapter<MymovieRecy
         holder.mContentView.setText(wantedMovie.name);
         holder.mRaiting.setRating(Float.parseFloat(wantedMovie.rate));
         holder.mImage.setTag(holder.mItem.imageUrl);
-        if (MovieListFragment.adminOptions) {
+        if (MovieListFragment.adminOptions && MovieListFragment.showCB) {
             holder.mCB.setVisibility(View.VISIBLE);
             holder.mCB.setChecked(wantedMovie.checked);
         }

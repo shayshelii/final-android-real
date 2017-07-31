@@ -12,23 +12,7 @@ import android.widget.Button;
 import com.example.shaysheli.androaid_final.Model.Movie;
 import com.example.shaysheli.androaid_final.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AdminPanelFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AdminPanelFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AdminPanelFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -36,13 +20,6 @@ public class AdminPanelFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment AdminPanelFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static AdminPanelFragment newInstance() {
         AdminPanelFragment fragment = new AdminPanelFragment();
         Bundle args = new Bundle();
@@ -79,15 +56,12 @@ public class AdminPanelFragment extends Fragment {
                 if (mListener != null) {
                     MovieListFragment listFragment =  MovieListFragment.newInstance(1, true);
                     mListener.onFragmentAdminChooseInteraction(listFragment);
+                    MovieListFragment.showCB = true;
                 }
             }
         });
 
         return v;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed() {
     }
 
     @Override
@@ -104,6 +78,7 @@ public class AdminPanelFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+        MovieListFragment.showCB = false;
         mListener = null;
     }
 
@@ -118,7 +93,6 @@ public class AdminPanelFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentAdminChooseInteraction(Fragment frag);
     }
 }

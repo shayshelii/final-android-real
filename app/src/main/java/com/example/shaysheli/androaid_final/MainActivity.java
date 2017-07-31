@@ -30,7 +30,7 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
 {
     LoginFragment loginFragmentInstance;
     public static MovieListFragment movieListFragmentInstance;
-    MovieDetailFragment movieDetailFragmentInstance;
+    public static MovieDetailFragment movieDetailFragmentInstance;
 
     private static Context context;
     static final int REQUEST_WRITE_STORAGE = 11;
@@ -85,7 +85,7 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
         tran.hide(this.movieListFragmentInstance);
 
         tran.addToBackStack("backList");
-        tran.add(R.id.main_container, this.movieDetailFragmentInstance);
+        tran.replace(R.id.main_container, this.movieDetailFragmentInstance);
         tran.commit();
     }
 
@@ -112,7 +112,6 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
     public void onFragmentAdminChooseInteraction(Fragment frag) {
         tran = getFragmentManager().beginTransaction();
         tran.addToBackStack("backToAdminPanel");
-        tran = getFragmentManager().beginTransaction();
         tran.replace(R.id.main_container, frag);
         tran.commit();
     }
