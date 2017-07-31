@@ -4,10 +4,11 @@
         android:icon="@android:drawable/ic_menu_add"
         android:title="add new"
         android:showAsAction="ifRoom"/>
+
     <item android:id="@+id/all_movies"
         android:title="All Movies"
         android:showAsAction="ifRoom"/>
-    <item android:id="@+id/sign_out"
-        android:title="Sign Out"
+    <item android:id="@+id/signout"
+        android:title="sign out"
         android:showAsAction="ifRoom"/>
 </menu>

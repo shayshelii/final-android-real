@@ -7,7 +7,7 @@
     <item android:id="@+id/my_movies"
         android:title="My Movies"
         android:showAsAction="ifRoom"/>
-    <item android:id="@+id/sign_out"
-        android:title="Sign Out"
+    <item android:id="@+id/signout"
+        android:title="sign out"
         android:showAsAction="ifRoom"/>
 </menu>
