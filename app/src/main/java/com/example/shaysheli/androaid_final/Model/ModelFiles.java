@@ -9,7 +9,6 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.example.shaysheli.androaid_final.MainActivity;
-import com.example.shaysheli.androaid_final.MyApplication;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +30,7 @@ public class ModelFiles {
             if (!dir.exists()) {
                 dir.mkdir();
             }
+
             File imageFile = new File(dir, imageFileName);
             imageFile.createNewFile();
 
@@ -90,6 +90,6 @@ public class ModelFiles {
                 Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
         Uri contentUri = Uri.fromFile(imageFile);
         mediaScanIntent.setData(contentUri);
-        MyApplication.getMyContext().sendBroadcast(mediaScanIntent);
+        MainActivity.getMyContext().sendBroadcast(mediaScanIntent);
     }
 }
