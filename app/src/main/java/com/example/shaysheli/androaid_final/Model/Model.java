@@ -1,5 +1,7 @@
 package com.example.shaysheli.androaid_final.Model;
 
+import android.graphics.Bitmap;
+
 import com.example.shaysheli.androaid_final.fragments.MymovieRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -12,10 +14,12 @@ public class Model {
     public final static Model instance = new Model();
     private ModelMovieFirebase modelMovieFirebase;
     private ModelUserFirebase modelUserFirebase;
+    private ModelStorageFirebase modelStorageFirebase;
 
     private Model(){
         modelMovieFirebase = new ModelMovieFirebase();
         modelUserFirebase = new ModelUserFirebase();
+        modelStorageFirebase = new ModelStorageFirebase();
     }
 
     // works with firebase
@@ -208,4 +212,44 @@ public class Model {
             }
         });
     }
+
+
+    // TODO: 7/31/17 Storage options!
+
+    public interface ISaveImageCallback {
+        void onComplete(String imageUrl);
+        void onCancel();
+    }
+    public void saveImage(Bitmap imageBmp, String name, final ISaveImageCallback callback) {
+        modelStorageFirebase.saveImage(imageBmp, name, new ModelStorageFirebase.ISaveImageCallback() {
+            @Override
+            public void onComplete(String imageUrl) {
+                callback.onComplete(imageUrl);
+            }
+
+            @Override
+            public void onCancel() {
+                callback.onCancel();
+            }
+        });
+    }
+
+    public interface IGetImageCallback {
+        void onComplete(Bitmap image);
+        void onCancel();
+    }
+    public void getImage(String imageUrl, final IGetImageCallback callback) {
+        modelStorageFirebase.getImage(imageUrl, new ModelStorageFirebase.IGetImageCallback() {
+            @Override
+            public void onComplete(Bitmap image) {
+                callback.onComplete(image);
+            }
+
+            @Override
+            public void onCancel() {
+                callback.onCancel();
+            }
+        });
+    }
+
 }
