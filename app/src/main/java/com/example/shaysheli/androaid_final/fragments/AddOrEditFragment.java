@@ -226,6 +226,7 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
             public void onComplete(User currentUser) {
                 mvEdit.name = edtName.getText().toString();
                 mvEdit.rate = edtRate.getRating() + "";
+                mvEdit.description = edtDesc.getText().toString();
                 mvEdit.dateCreated = datePicker.getText().toString();
                 mvEdit.userId = currentUser.getId();
 

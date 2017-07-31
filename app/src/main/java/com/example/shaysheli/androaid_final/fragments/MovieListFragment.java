@@ -162,7 +162,7 @@ public class MovieListFragment extends Fragment {
                 AddOrEditFragment details = AddOrEditFragment.newInstance(null, "Add");
                 tran = getFragmentManager().beginTransaction();
                 tran.addToBackStack("");
-                tran.add(R.id.main_container, details).commit();
+                tran.replace(R.id.main_container, details).commit();
 
                 break;
             case R.id.admin_panel:
