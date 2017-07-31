@@ -70,7 +70,7 @@ public class LoginFragment extends Fragment {
                     actuallyCreateTheView(view);
                 }
                 else{
-                    MovieListFragment listFragment = MovieListFragment.newInstance(1, false);
+                    MovieListFragment listFragment = MovieListFragment.newInstance(1, currentUser.getAdmin());
                     onButtonPressed(listFragment);
                 }
             }
