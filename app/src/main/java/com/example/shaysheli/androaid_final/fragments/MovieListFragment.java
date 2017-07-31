@@ -154,6 +154,13 @@ public class MovieListFragment extends Fragment {
                 tran.add(R.id.main_container, details).commit();
 
                 break;
+            case R.id.admin_panel:
+                AdminPanelFragment adminPanelFragment = AdminPanelFragment.newInstance();
+                tran = getFragmentManager().beginTransaction();
+                tran.addToBackStack("");
+                tran.add(R.id.main_container, adminPanelFragment).commit();
+
+                break;
             case R.id.all_movies:
                 MovieListFragment.mvMyList = null;
                 (recyclerView.getAdapter()).notifyDataSetChanged();

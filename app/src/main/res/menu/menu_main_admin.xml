@@ -3,6 +3,9 @@
     <item android:id="@+id/del_movies"
         android:title="Delete"
         android:showAsAction="ifRoom"/>
+    <item android:id="@+id/admin_panel"
+        android:title="Admin Panel"
+        android:showAsAction="ifRoom"/>
     <item android:id="@+id/add_new"
         android:icon="@android:drawable/ic_menu_add"
         android:title="add new"

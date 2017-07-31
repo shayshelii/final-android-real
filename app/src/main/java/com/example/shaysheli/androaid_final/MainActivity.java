@@ -73,9 +73,9 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
     public void onFragmentInteraction(String mvId) {
         AddOrEditFragment details = AddOrEditFragment.newInstance(mvId, "Edit");
 
+        tran = getFragmentManager().beginTransaction();
         tran.hide(this.movieDetailFragmentInstance);
         tran.addToBackStack("backToDetail");
-        tran = getFragmentManager().beginTransaction();
         tran.add(R.id.main_container, details).commit();
     }
 

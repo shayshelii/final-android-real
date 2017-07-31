@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -78,6 +79,7 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Log.d("dev", "onCreateEdit");
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             MOVIEID = getArguments().getString(ARG_MOVIEID);
@@ -88,6 +90,7 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Log.d("dev", "onCreateViewEdit");
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_add_or_edit, container, false);
         btnAddEdit = (Button) v.findViewById(R.id.AddEditButton);

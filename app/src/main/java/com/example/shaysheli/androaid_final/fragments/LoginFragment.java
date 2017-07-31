@@ -71,7 +71,7 @@ public class LoginFragment extends Fragment {
                     @Override
                     public void onComplete(User user) {
                         if (user != null) {
-                            MovieListFragment listFragment = MovieListFragment.newInstance(1, false);
+                            MovieListFragment listFragment = MovieListFragment.newInstance(1, user.isAdmin);
                             onButtonPressed(listFragment);
                         }
                         else {
