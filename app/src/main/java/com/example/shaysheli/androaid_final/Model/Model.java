@@ -213,6 +213,9 @@ public class Model {
         });
     }
 
+    public void signOut() {
+        modelUserFirebase.signOut();
+    }
 
     // TODO: 7/31/17 Storage options!
 

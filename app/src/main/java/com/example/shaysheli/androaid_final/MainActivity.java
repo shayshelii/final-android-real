@@ -89,10 +89,6 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
     }
 
     @Override
-    public void onFragmentRegisterInteraction() {
-    }
-
-    @Override
     public void onFragmentAdminChooseInteraction(Fragment frag) {
         tran = getFragmentManager().beginTransaction();
         tran.addToBackStack("backToAdminPanel");

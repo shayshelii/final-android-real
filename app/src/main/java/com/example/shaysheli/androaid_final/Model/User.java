@@ -9,21 +9,24 @@ public class User {
     public String name;
     public String email;
     public Boolean isAdmin;
+    public String phoneNumber;
 
     public User () {
 
     }
 
-    public User(String name, String email, Boolean isAdmin) {
+    public User(String name, String email, String phoneNumber, Boolean isAdmin) {
         this.name = name;
         this.email = email;
         this.isAdmin = isAdmin;
+        this.phoneNumber = phoneNumber;
     }
 
     public User(User other) {
         this.name = other.getName();
         this.email = other.getEmail();
         this.isAdmin = other.getAdmin();
+        this.phoneNumber = other.getPhoneNumber();
     }
 
     public String getId() {
@@ -57,4 +60,13 @@ public class User {
     public void setAdmin(Boolean admin) {
         isAdmin = admin;
     }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
 }

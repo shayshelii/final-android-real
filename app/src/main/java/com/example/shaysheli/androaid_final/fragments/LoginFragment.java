@@ -54,6 +54,9 @@ public class LoginFragment extends Fragment {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
 
+        // TODO: 7/31/17 USE SIGNOUT METHOD IF YOU WANT TO SIGNOUT
+//        Model.instance.signOut();
+
         Model.instance.getCurrentUser(new Model.IGetCurrentUserCallback() {
             @Override
             public void onComplete(User currentUser) {
