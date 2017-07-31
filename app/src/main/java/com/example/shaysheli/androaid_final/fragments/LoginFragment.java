@@ -63,6 +63,8 @@ public class LoginFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
         progressBar = (ProgressBar) view.findViewById(R.id.login_progressBar);
         progressBar.setVisibility(View.VISIBLE);
+        progressBar.bringToFront();
+
         // TODO: 7/31/17 USE SIGNOUT METHOD IF YOU WANT TO SIGNOUT
         // Model.instance.signOut();
 
@@ -100,15 +102,18 @@ public class LoginFragment extends Fragment {
                     alertDialog.show();
                 }
                 else {
+                    progressBar.setVisibility(View.VISIBLE);
+
                     Model.instance.userLogin(email, password, new Model.IGetUserLoginCallback() {
                         @Override
                         public void onComplete(User user) {
+                            progressBar.setVisibility(View.GONE);
+
                             if (user != null) {
                                 MovieListFragment listFragment = MovieListFragment.newInstance(1, user.isAdmin);
                                 onButtonPressed(listFragment);
                             } else {
-                                // TODO: 7/30/17 User not found -> must handle
-                                Toast.makeText(v.getContext(), "Authentication Error, Please try again", Toast.LENGTH_SHORT);
+                                showPopupMethod(v, "Authentication fails", "Please try again");
                             }
                         }
                     });
@@ -147,6 +152,21 @@ public class LoginFragment extends Fragment {
 
         return builder.create();
     }
+
+    private void showPopupMethod(View v, String title, String message) {
+        AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
+        alertDialog.setTitle(title);
+        alertDialog.setMessage(message);
+        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+        alertDialog.show();
+    }
+
 
     public final void onButtonPressed(Fragment frag) {
         if (mListener != null) {
