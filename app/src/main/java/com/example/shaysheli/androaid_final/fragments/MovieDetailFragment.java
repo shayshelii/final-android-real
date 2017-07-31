@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.LinearLayout;
@@ -31,10 +32,11 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
 
     private OnFragmentInteractionListener mListener;
     public static FragmentTransaction tran;
-
+    Movie mvCurrentMovie;
     public TextView movieTitle;
     public TextView movieDescription;
     public RatingBar movieRating;
+    public ProgressBar movieProgress;
     public MovieDetailFragment() {  }
 
     /**
@@ -56,22 +58,6 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
     @Override
     public void onCreate(Bundle savedInstanceState) {
         Log.d("dev", "onCreate");
-        Model.instance.getCurrentUser(new Model.IGetCurrentUserCallback() {
-            @Override
-            public void onComplete(final User currentUser) {
-                Model.instance.getMovieByID(getArguments().getString(MOVIE_ID), new Model.IGetMovieCallback() {
-                    @Override
-                    public void onComplete(Movie mv) {
-                        setHasOptionsMenu(currentUser.getId().equals(mv.userId));
-                    }
-
-                    @Override
-                    public void onCancel() {
-
-                    }
-                });
-            }
-        });
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             MovieID = getArguments().getString(MOVIE_ID);
@@ -91,34 +77,48 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
         movieRating = (RatingBar) view.findViewById(R.id.details_movie_rating);
         movieTitle = (TextView) view.findViewById(R.id.details_movie_name);
         movieDescription = (TextView) view.findViewById(R.id.details_movie_description);
+        movieProgress = (ProgressBar) view.findViewById(R.id.detail_progressBar);
+        movieProgress.setVisibility(View.VISIBLE);
 
-
-        Model.instance.getMovieByID(MovieID, new Model.IGetMovieCallback() {
+        Model.instance.getCurrentUser(new Model.IGetCurrentUserCallback() {
             @Override
-            public void onComplete(Movie mv) {
-                movieTitle.setText(mv.name);
-                movieDescription.setText(mv.description);
-                movieRating.setRating(Float.parseFloat(mv.rate));
-
-                Model.instance.getImage(mv.imageUrl, new Model.IGetImageCallback() {
+            public void onComplete(final User currentUser) {
+                Model.instance.getMovieByID(getArguments().getString(MOVIE_ID), new Model.IGetMovieCallback() {
                     @Override
-                    public void onComplete(Bitmap image) {
-                        BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), image);
-                        l.setBackground(bitmapDrawable);
+                    public void onComplete(Movie mv) {
+                        setHasOptionsMenu(currentUser.getId().equals(mv.userId));
+                        mvCurrentMovie = mv;
+                        movieTitle.setText(mv.name);
+                        movieDescription.setText(mv.description);
+                        movieRating.setVisibility(View.VISIBLE);
+                        movieRating.setRating(Float.parseFloat(mv.rate));
+
+                        Model.instance.getImage(mv.imageUrl, new Model.IGetImageCallback() {
+                            @Override
+                            public void onComplete(Bitmap image) {
+                                BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), image);
+                                l.setBackground(bitmapDrawable);
+                                movieProgress.setVisibility(View.GONE);
+                            }
+
+                            @Override
+                            public void onCancel() {
+                                movieProgress.setVisibility(View.GONE);
+
+                            }
+                        });
                     }
 
                     @Override
                     public void onCancel() {
+                        movieProgress.setVisibility(View.GONE);
 
                     }
                 });
             }
-
-            @Override
-            public void onCancel() {
-
-            }
         });
+
+
 
         return view;
     }

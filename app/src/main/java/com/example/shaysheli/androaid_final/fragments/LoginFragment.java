@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.shaysheli.androaid_final.Model.Model;
@@ -29,6 +31,7 @@ public class LoginFragment extends Fragment {
 
     private EditText emailEditText;
     private EditText passwordEditText;
+    private ProgressBar progressBar;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -59,15 +62,17 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         final View view = inflater.inflate(R.layout.fragment_login, container, false);
-
+        progressBar = (ProgressBar) view.findViewById(R.id.login_progressBar);
+        progressBar.setVisibility(View.VISIBLE);
         // TODO: 7/31/17 USE SIGNOUT METHOD IF YOU WANT TO SIGNOUT
-//        Model.instance.signOut();
+        //Model.instance.signOut();
 
         Model.instance.getCurrentUser(new Model.IGetCurrentUserCallback() {
             @Override
             public void onComplete(User currentUser) {
                 if (currentUser == null) {
                     actuallyCreateTheView(view);
+                    progressBar.setVisibility(View.GONE);
                 }
                 else{
                     MovieListFragment listFragment = MovieListFragment.newInstance(1, currentUser.getAdmin());

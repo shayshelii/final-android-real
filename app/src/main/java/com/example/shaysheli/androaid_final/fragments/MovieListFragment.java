@@ -35,6 +35,7 @@ public class MovieListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private onListToLoginFragmentInteractionListener mLoginListener;
     public static FragmentTransaction tran;
     public static Boolean adminOptions;
     public RecyclerView recyclerView;
@@ -109,6 +110,13 @@ public class MovieListFragment extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
+
+        if (context instanceof onListToLoginFragmentInteractionListener) {
+            mLoginListener = (onListToLoginFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement onListToLoginFragmentInteractionListener");
+        }
     }
 
     @Override
@@ -128,8 +136,11 @@ public class MovieListFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Movie item);
+    }
+
+    public interface onListToLoginFragmentInteractionListener {
+        void onListToLoginFragmentInteraction();
     }
 
     @Override
@@ -152,6 +163,11 @@ public class MovieListFragment extends Fragment {
                 tran = getFragmentManager().beginTransaction();
                 tran.addToBackStack("");
                 tran.add(R.id.main_container, details).commit();
+
+                break;
+            case R.id.sign_out:
+                Model.instance.signOut();
+                mLoginListener.onListToLoginFragmentInteraction();
 
                 break;
             case R.id.admin_panel:

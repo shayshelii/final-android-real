@@ -6,41 +6,53 @@
     android:id="@+id/detail_frag"
     android:background="@color/colorPrimary"
     tools:context="com.example.shaysheli.androaid_final.fragments.MovieDetailFragment">
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <TextView
-            android:id="@+id/details_movie_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Title"
-        android:textSize="30dp"
-            android:textColor="@color/colorAccent"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:layout_gravity="center_horizontal"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:id="@+id/details_movie_description"
-            android:layout_weight="0.1"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/details_movie_create"
-            android:layout_weight="0.005"/>
-        <RatingBar
-            android:id="@+id/details_movie_rating"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        android:layout_height="match_parent">
 
-            style="?android:attr/ratingBarStyle"
-            android:layout_marginBottom="40dp"
-            android:numStars="5"
-            android:layout_gravity="center_horizontal"
-            android:stepSize="0.5"
-            android:isIndicator="true"/>
-    </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/detail_progressBar"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_width="70dp"
+            android:layout_height="70dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/details_movie_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+                android:textColor="@color/colorAccent"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:layout_gravity="center_horizontal"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:id="@+id/details_movie_description"
+                android:layout_weight="0.1"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/details_movie_create"
+                android:layout_weight="0.005"/>
+            <RatingBar
+                android:id="@+id/details_movie_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                style="?android:attr/ratingBarStyle"
+                android:layout_marginBottom="40dp"
+                android:numStars="5"
+                android:layout_gravity="center_horizontal"
+                android:stepSize="0.5"
+                android:isIndicator="true"/>
+        </LinearLayout>
+    </FrameLayout>
 </LinearLayout>

@@ -21,7 +21,8 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
                                                                AddOrEditFragment.OnFragmentInteractionListener,
                                                                RegisterFragment.OnFragmentInteractionListener,
                                                                AdminPanelFragment.OnFragmentInteractionListener,
-                                                               UserManagementFragment.OnListFragmentInteractionListener
+                                                               UserManagementFragment.OnListFragmentInteractionListener,
+                                                               MovieListFragment.onListToLoginFragmentInteractionListener
 {
     LoginFragment loginFragmentInstance;
     public static MovieListFragment movieListFragmentInstance;
@@ -100,5 +101,11 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
     @Override
     public void onUserListFragmentInteraction(User item){
 
+    }
+
+    @Override
+    public void onListToLoginFragmentInteraction() {
+        tran = getFragmentManager().beginTransaction();
+        tran.add(R.id.main_container, loginFragmentInstance).commit();
     }
 }
