@@ -37,6 +37,7 @@ public class MovieListFragment extends Fragment {
     private onListToLoginFragmentInteractionListener mLoginListener;
     public static FragmentTransaction tran;
     public static Boolean adminOptions;
+    public static Boolean showCB = false;
     public RecyclerView recyclerView;
     public static List<Movie> mvMyList;
     /**
@@ -168,7 +169,7 @@ public class MovieListFragment extends Fragment {
                 AdminPanelFragment adminPanelFragment = AdminPanelFragment.newInstance();
                 tran = getFragmentManager().beginTransaction();
                 tran.addToBackStack("");
-                tran.add(R.id.main_container, adminPanelFragment).commit();
+                tran.replace(R.id.main_container, adminPanelFragment).commit();
 
                 break;
             case R.id.all_movies:

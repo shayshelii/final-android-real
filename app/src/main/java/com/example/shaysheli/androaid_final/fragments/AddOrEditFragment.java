@@ -47,7 +47,8 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
     private static Button btnAddEdit = null;
     private static Movie mvEdit;
     private static EditText edtName = null;
-    private static EditText edtId = null;
+    private static EditText edtDesc = null;
+    private static String edtID = "";
     private static RatingBar edtRate = null;
     private static ImageView edtImage = null;
     private static MyDatePicker datePicker = null;
@@ -97,7 +98,7 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
         Button btnAddEditCancel = (Button) v.findViewById(R.id.AddEditButtonCancel);
         Button btnAddEditDel = (Button) v.findViewById(R.id.AddEditButtonDel);
         edtName = (EditText) v.findViewById(R.id.AddEditName);
-        edtId = (EditText) v.findViewById(R.id.AddEditId);
+        edtDesc = (EditText) v.findViewById(R.id.AddEditDesc);
         edtRate = (RatingBar) v.findViewById(R.id.AddEditRating);
         edtRate.setIsIndicator(false);
         edtImage = (ImageView) v.findViewById(R.id.AddEditImage);
@@ -113,10 +114,11 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
                 @Override
                 public void onComplete(Movie mv) {
                     mvEdit = mv;
-                    edtId.setText(mvEdit.id);
+                    edtDesc.setText(mvEdit.description);
                     edtName.setText(mvEdit.name);
                     edtRate.setRating(Float.parseFloat(mvEdit.rate));
                     datePicker.setText(mvEdit.dateCreated);
+                    edtID = mvEdit.id;
 
                     Model.instance.getImage(mvEdit.imageUrl, new Model.IGetImageCallback() {
                         @Override
@@ -223,14 +225,13 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onComplete(User currentUser) {
                 mvEdit.name = edtName.getText().toString();
-                final String idToCheck = edtId.getText().toString();
                 mvEdit.rate = edtRate.getRating() + "";
                 mvEdit.dateCreated = datePicker.getText().toString();
                 mvEdit.userId = currentUser.getId();
 
                 if (movieImageBitmap == null) {
                     mvEdit.imageUrl = DEFAULT_MOVIE_IMAGE_URL;
-                    addOrEditSaveMovie(v, idToCheck);
+                    addOrEditSaveMovie(v, edtID);
                 }
                 else {
                     long timeStamp = System.currentTimeMillis();
@@ -239,7 +240,7 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
                         @Override
                         public void onComplete(String imageUrl) {
                             mvEdit.imageUrl = imageUrl;
-                            addOrEditSaveMovie(v, idToCheck);
+                            addOrEditSaveMovie(v, edtID);
                         }
 
                         @Override

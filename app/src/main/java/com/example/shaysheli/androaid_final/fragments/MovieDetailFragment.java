@@ -20,6 +20,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.LinearLayout;
 
+import com.example.shaysheli.androaid_final.MainActivity;
 import com.example.shaysheli.androaid_final.Model.User;
 import com.example.shaysheli.androaid_final.R;
 import com.example.shaysheli.androaid_final.Model.Model;
@@ -59,6 +60,8 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         Log.d("dev", "onCreate");
         super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) { getFragmentManager().beginTransaction().replace(R.id.main_container, MainActivity.movieDetailFragmentInstance);
+        }
         if (getArguments() != null) {
             MovieID = getArguments().getString(MOVIE_ID);
         }
