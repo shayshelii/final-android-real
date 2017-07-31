@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.Model.User;
 import com.example.shaysheli.androaid_final.R;
 
@@ -27,7 +29,6 @@ public class RegisterFragment extends Fragment {
     private static EditText txtUserName;
     private static EditText txtEmail;
     private static EditText txtPhone;
-    private static EditText txtLocation;
     private static EditText txtPassword;
     private static EditText txtConfirmPassword;
     private static CheckBox cbAgree;
@@ -36,6 +37,7 @@ public class RegisterFragment extends Fragment {
     public RegisterFragment() {}
 
 
+    // TODO: Rename and change types and number of parameters
     public static RegisterFragment newInstance() {
         RegisterFragment fragment = new RegisterFragment();
         Bundle args = new Bundle();
@@ -56,7 +58,6 @@ public class RegisterFragment extends Fragment {
         txtUserName = (EditText) v.findViewById(R.id.regfullName);
         txtEmail = (EditText) v.findViewById(R.id.reguserEmailId);
         txtPhone = (EditText) v.findViewById(R.id.regmobileNumber);
-        txtLocation = (EditText) v.findViewById(R.id.reglocation);
         txtPassword = (EditText) v.findViewById(R.id.regpassword);
         txtConfirmPassword = (EditText) v.findViewById(R.id.regconfirmPassword);
         cbAgree = (CheckBox) v.findViewById(R.id.regterms_conditions);
@@ -76,9 +77,10 @@ public class RegisterFragment extends Fragment {
         return v;
     }
 
-    public void onButtonPressed() {
+    // TODO: Rename method, update argument and hook method into UI event
+    public void onButtonPressed(Fragment frag) {
         if (mListener != null) {
-            mListener.onFragmentRegisterInteraction();
+            mListener.onFragmentInteractionChangeFrag(frag);
         }
     }
 
@@ -110,7 +112,7 @@ public class RegisterFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onFragmentRegisterInteraction();
+        void onFragmentInteractionChangeFrag(Fragment frag);
     }
 
     public AlertDialog checkFields(){
@@ -123,7 +125,6 @@ public class RegisterFragment extends Fragment {
         String getFullName = txtUserName.getText().toString();
         String getEmailId = txtEmail.getText().toString();
         String getMobileNumber = txtPhone.getText().toString();
-        String getLocation = txtLocation.getText().toString();
         String getPassword = txtPassword.getText().toString();
         String getConfirmPassword = txtConfirmPassword.getText().toString();
 
@@ -134,7 +135,6 @@ public class RegisterFragment extends Fragment {
         if (getFullName.equals("") || getFullName.length() == 0
                 || getEmailId.equals("") || getEmailId.length() == 0
                 || getMobileNumber.equals("") || getMobileNumber.length() == 0
-                || getLocation.equals("") || getLocation.length() == 0
                 || getPassword.equals("") || getPassword.length() == 0
                 || getConfirmPassword.equals("")
                 || getConfirmPassword.length() == 0)
@@ -181,7 +181,23 @@ public class RegisterFragment extends Fragment {
     public void SignUp(){
         User newUser = new User(txtUserName.getText().toString(),
                                 txtEmail.getText().toString(),
+                                txtPhone.getText().toString(),
                                 false);
         // TODO: Update DB
+
+        String password = txtPassword.getText().toString();
+
+        Model.instance.addUser(newUser, password, new Model.IAddUser() {
+            @Override
+            public void onComplete(User user) {
+                MovieListFragment listFragment = MovieListFragment.newInstance(1, false);
+                onButtonPressed(listFragment);
+            }
+
+            @Override
+            public void onError(String reason) {
+                Toast.makeText(v.getContext(), "Unable to create user, Please try again", Toast.LENGTH_LONG);
+            }
+        });
     }
 }
