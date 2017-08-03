@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
 import com.example.shaysheli.androaid_final.Model.Model;
@@ -99,6 +100,7 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
         Button btnAddEditDel = (Button) v.findViewById(R.id.AddEditButtonDel);
         edtName = (EditText) v.findViewById(R.id.AddEditName);
         edtDesc = (EditText) v.findViewById(R.id.AddEditDesc);
+        final LinearLayout l = (LinearLayout) v.findViewById(R.id.addOrEditFrag);
         edtRate = (RatingBar) v.findViewById(R.id.AddEditRating);
         edtRate.setIsIndicator(false);
         edtImage = (ImageView) v.findViewById(R.id.AddEditImage);
@@ -118,6 +120,7 @@ public class AddOrEditFragment extends Fragment implements View.OnClickListener{
                     edtName.setText(mvEdit.name);
                     edtRate.setRating(Float.parseFloat(mvEdit.rate));
                     datePicker.setText(mvEdit.dateCreated);
+                    l.setBackground(MovieDetailFragment.backgroundImage);
                     edtID = mvEdit.id;
 
                     Model.instance.getImage(mvEdit.imageUrl, new Model.IGetImageCallback() {

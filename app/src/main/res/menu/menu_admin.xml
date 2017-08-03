@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/del_movies"
+        android:title="Delete"
+        android:showAsAction="ifRoom"/>
     <item android:id="@+id/admin_panel"
         android:title="Admin Panel"
         android:showAsAction="ifRoom"/>

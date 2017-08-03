@@ -32,8 +32,7 @@ public class LoginFragment extends Fragment {
     private EditText passwordEditText;
     private ProgressBar progressBar;
 
-    public LoginFragment() {
-        // Required empty public constructor
+    public LoginFragment() { // Required empty public constructor
     }
 
     /**

@@ -96,7 +96,7 @@ public class MainActivity extends ActionBarActivity implements LoginFragment.OnF
         tran = getFragmentManager().beginTransaction();
         tran.hide(this.movieDetailFragmentInstance);
         tran.addToBackStack("backToDetail");
-        tran.add(R.id.main_container, details).commit();
+        tran.replace(R.id.main_container, details).commit();
     }
 
     @Override

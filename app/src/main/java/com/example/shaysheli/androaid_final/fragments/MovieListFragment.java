@@ -3,7 +3,13 @@ package com.example.shaysheli.androaid_final.fragments;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.example.shaysheli.androaid_final.MainActivity;
 import com.example.shaysheli.androaid_final.Model.User;
@@ -20,13 +27,14 @@ import com.example.shaysheli.androaid_final.R;
 import com.example.shaysheli.androaid_final.Model.Model;
 import com.example.shaysheli.androaid_final.Model.Movie;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities  this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
 public class MovieListFragment extends Fragment {
@@ -71,6 +79,7 @@ public class MovieListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
+        setMeasure(view);
 
         // Set the adapter
         if (view instanceof RecyclerView) {
@@ -101,6 +110,17 @@ public class MovieListFragment extends Fragment {
         return view;
     }
 
+    private void setMeasure(View v) {
+        Point p = new Point();
+        RecyclerView mContentView = (RecyclerView) v.findViewById(R.id.list);
+        ViewGroup.LayoutParams params = mContentView.getLayoutParams();
+        getActivity().getWindowManager().getDefaultDisplay().getSize(p);
+
+        params.height = (int)Math.round(p.y * 0.9);
+        params.width = (int)Math.round(p.x * 0.9);
+        mContentView.setLayoutParams(params);
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -125,16 +145,6 @@ public class MovieListFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(Movie item);
     }
@@ -146,7 +156,9 @@ public class MovieListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
-        if (MovieListFragment.adminOptions)
+        if ((MovieListFragment.adminOptions) && (MovieListFragment.showCB))
+            inflater.inflate(R.menu.menu_admin, menu);
+        else if (MovieListFragment.adminOptions)
             inflater.inflate(R.menu.menu_main_admin, menu);
         else if (MovieListFragment.mvMyList != null)
             inflater.inflate(R.menu.menu_main_all_movies, menu);

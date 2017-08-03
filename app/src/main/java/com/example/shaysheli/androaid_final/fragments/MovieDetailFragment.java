@@ -38,6 +38,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
     public TextView movieDescription;
     public RatingBar movieRating;
     public ProgressBar movieProgress;
+    public static BitmapDrawable backgroundImage;
     public MovieDetailFragment() {  }
 
     /**
@@ -89,7 +90,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
                 Model.instance.getMovieByID(getArguments().getString(MOVIE_ID), new Model.IGetMovieCallback() {
                     @Override
                     public void onComplete(Movie mv) {
-                        setHasOptionsMenu(currentUser.getId().equals(mv.userId));
+                        setHasOptionsMenu(currentUser.getId().equals(mv.userId) || currentUser.isAdmin);
                         mvCurrentMovie = mv;
                         movieTitle.setText(mv.name);
                         movieDescription.setText(mv.description);
@@ -100,6 +101,7 @@ public class MovieDetailFragment extends Fragment implements View.OnClickListene
                             @Override
                             public void onComplete(Bitmap image) {
                                 BitmapDrawable bitmapDrawable = new BitmapDrawable(getResources(), image);
+                                MovieDetailFragment.backgroundImage = bitmapDrawable;
                                 l.setBackground(bitmapDrawable);
                                 movieProgress.setVisibility(View.GONE);
                             }
